@@ -3,7 +3,6 @@ package com.github.mikephil.charting.renderer;
 
 import android.graphics.Canvas;
 import android.graphics.Paint.Align;
-
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.buffer.BarBuffer;
 import com.github.mikephil.charting.buffer.HorizontalBarBuffer;
@@ -20,7 +19,7 @@ import java.util.List;
 
 /**
  * Renderer for the HorizontalBarChart.
- * 
+ *
  * @author Philipp Jahoda
  */
 public class HorizontalBarChartRenderer extends BarChartRenderer {
@@ -28,7 +27,7 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
     private float mYOffset = 0f;
 
     public HorizontalBarChartRenderer(BarDataProvider chart, ChartAnimator animator,
-            ViewPortHandler viewPortHandler) {
+                                      ViewPortHandler viewPortHandler) {
         super(chart, animator, viewPortHandler);
 
         mValuePaint.setTextAlign(Align.LEFT);
@@ -43,8 +42,8 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
         for (int i = 0; i < mBarBuffers.length; i++) {
             BarDataSet set = barData.getDataSetByIndex(i);
             mBarBuffers[i] = new HorizontalBarBuffer(set.getValueCount() * 4 * set.getStackSize(),
-                    barData.getGroupSpace(),
-                    barData.getDataSetCount(), set.isStacked());
+                                                     barData.getGroupSpace(),
+                                                     barData.getDataSetCount(), set.isStacked());
         }
     }
 
@@ -73,16 +72,18 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
 
         for (int j = 0; j < buffer.size(); j += 4) {
 
-            if (!mViewPortHandler.isInBoundsTop(buffer.buffer[j + 3]))
+            if (!mViewPortHandler.isInBoundsTop(buffer.buffer[j + 3])) {
                 break;
+            }
 
-            if (!mViewPortHandler.isInBoundsBottom(buffer.buffer[j + 1]))
+            if (!mViewPortHandler.isInBoundsBottom(buffer.buffer[j + 1])) {
                 continue;
+            }
 
             if (mChart.isDrawBarShadowEnabled()) {
                 c.drawRect(mViewPortHandler.contentLeft(), buffer.buffer[j + 1],
-                        mViewPortHandler.contentRight(),
-                        buffer.buffer[j + 3], mShadowPaint);
+                           mViewPortHandler.contentRight(),
+                           buffer.buffer[j + 3], mShadowPaint);
             }
 
             // Set the color for the currently drawn value. If the index
@@ -90,7 +91,7 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
             // out of bounds, reuse colors.
             mRenderPaint.setColor(dataSet.getColor(j / 4));
             c.drawRect(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
-                    buffer.buffer[j + 3], mRenderPaint);
+                       buffer.buffer[j + 3], mRenderPaint);
         }
     }
 
@@ -106,17 +107,20 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
             float negOffset = 0f;
             boolean drawValueAboveBar = mChart.isDrawValueAboveBarEnabled();
 
-            if (drawValueAboveBar)
+            if (drawValueAboveBar) {
                 mValuePaint.setTextAlign(Align.LEFT);
-            else
+            }
+            else {
                 mValuePaint.setTextAlign(Align.RIGHT);
+            }
 
             for (int i = 0; i < mChart.getBarData().getDataSetCount(); i++) {
 
                 BarDataSet dataSet = dataSets.get(i);
 
-                if (!dataSet.isDrawValuesEnabled())
+                if (!dataSet.isDrawValuesEnabled()) {
                     continue;
+                }
 
                 boolean isInverted = mChart.isInverted(dataSet.getAxisDependency());
 
@@ -138,14 +142,17 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
 
                     for (int j = 0; j < valuePoints.length * mAnimator.getPhaseX(); j += 2) {
 
-                        if (!mViewPortHandler.isInBoundsX(valuePoints[j]))
+                        if (!mViewPortHandler.isInBoundsX(valuePoints[j])) {
                             continue;
+                        }
 
-                        if (!mViewPortHandler.isInBoundsTop(valuePoints[j + 1]))
+                        if (!mViewPortHandler.isInBoundsTop(valuePoints[j + 1])) {
                             break;
+                        }
 
-                        if (!mViewPortHandler.isInBoundsBottom(valuePoints[j + 1]))
+                        if (!mViewPortHandler.isInBoundsBottom(valuePoints[j + 1])) {
                             continue;
+                        }
 
                         float val = entries.get(j / 2).getVal();
                         String valueText = formatter.getFormattedValue(val);
@@ -155,18 +162,18 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
                         posOffset = (drawValueAboveBar ? valueOffsetPlus : -(valueTextWidth + valueOffsetPlus));
                         negOffset = (drawValueAboveBar ? -(valueTextWidth + valueOffsetPlus) : valueOffsetPlus);
 
-                        if (isInverted)
-                        {
+                        if (isInverted) {
                             posOffset = -posOffset - valueTextWidth;
                             negOffset = -negOffset - valueTextWidth;
                         }
 
                         drawValue(c, valueText, valuePoints[j] + (val >= 0 ? posOffset : negOffset),
-                                valuePoints[j + 1]);
+                                  valuePoints[j + 1]);
                     }
 
                     // if each value of a potential stack should be drawn
-                } else {
+                }
+                else {
 
                     for (int j = 0; j < (valuePoints.length - 1) * mAnimator.getPhaseX(); j += 2) {
 
@@ -179,14 +186,17 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
                         // in between
                         if (vals == null) {
 
-                            if (!mViewPortHandler.isInBoundsX(valuePoints[j]))
+                            if (!mViewPortHandler.isInBoundsX(valuePoints[j])) {
                                 continue;
+                            }
 
-                            if (!mViewPortHandler.isInBoundsTop(valuePoints[j + 1]))
+                            if (!mViewPortHandler.isInBoundsTop(valuePoints[j + 1])) {
                                 break;
+                            }
 
-                            if (!mViewPortHandler.isInBoundsBottom(valuePoints[j + 1]))
+                            if (!mViewPortHandler.isInBoundsBottom(valuePoints[j + 1])) {
                                 continue;
+                            }
 
                             float val = e.getVal();
                             String valueText = formatter.getFormattedValue(val);
@@ -196,17 +206,17 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
                             posOffset = (drawValueAboveBar ? valueOffsetPlus : -(valueTextWidth + valueOffsetPlus));
                             negOffset = (drawValueAboveBar ? -(valueTextWidth + valueOffsetPlus) : valueOffsetPlus);
 
-                            if (isInverted)
-                            {
+                            if (isInverted) {
                                 posOffset = -posOffset - valueTextWidth;
                                 negOffset = -negOffset - valueTextWidth;
                             }
 
                             drawValue(c, valueText, valuePoints[j]
-                                    + (e.getVal() >= 0 ? posOffset : negOffset),
-                                    valuePoints[j + 1]);
+                                                    + (e.getVal() >= 0 ? posOffset : negOffset),
+                                      valuePoints[j + 1]);
 
-                        } else {
+                        }
+                        else {
 
                             float[] transformed = new float[vals.length * 2];
                             int cnt = 0;
@@ -231,24 +241,26 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
                                 posOffset = (drawValueAboveBar ? valueOffsetPlus : -(valueTextWidth + valueOffsetPlus));
                                 negOffset = (drawValueAboveBar ? -(valueTextWidth + valueOffsetPlus) : valueOffsetPlus);
 
-                                if (isInverted)
-                                {
+                                if (isInverted) {
                                     posOffset = -posOffset - valueTextWidth;
                                     negOffset = -negOffset - valueTextWidth;
                                 }
 
                                 float x = transformed[k]
-                                        + (val >= 0 ? posOffset : negOffset);
+                                          + (val >= 0 ? posOffset : negOffset);
                                 float y = valuePoints[j + 1];
 
-                                if (!mViewPortHandler.isInBoundsX(x))
+                                if (!mViewPortHandler.isInBoundsX(x)) {
                                     continue;
+                                }
 
-                                if (!mViewPortHandler.isInBoundsTop(y))
+                                if (!mViewPortHandler.isInBoundsTop(y)) {
                                     break;
+                                }
 
-                                if (!mViewPortHandler.isInBoundsBottom(y))
+                                if (!mViewPortHandler.isInBoundsBottom(y)) {
                                     continue;
+                                }
 
                                 drawValue(c, valueText, x, y);
                             }
@@ -261,7 +273,7 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
 
     @Override
     protected void prepareBarHighlight(float x, float y, float barspaceHalf, float from,
-            Transformer trans) {
+                                       Transformer trans) {
 
         float top = x - 0.5f + barspaceHalf;
         float bottom = x + 0.5f - barspaceHalf;
@@ -275,9 +287,9 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
 
     @Override
     public float[] getTransformedValues(Transformer trans, List<BarEntry> entries,
-            int dataSetIndex) {
+                                        int dataSetIndex) {
         return trans.generateTransformedValuesHorizontalBarChart(entries, dataSetIndex,
-                mChart.getBarData(), mAnimator.getPhaseY());
+                                                                 mChart.getBarData(), mAnimator.getPhaseY());
     }
 
     @Override
@@ -288,6 +300,6 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
     @Override
     protected boolean passesCheck() {
         return mChart.getBarData().getYValCount() < mChart.getMaxVisibleCount()
-                * mViewPortHandler.getScaleY();
+                                                    * mViewPortHandler.getScaleY();
     }
 }

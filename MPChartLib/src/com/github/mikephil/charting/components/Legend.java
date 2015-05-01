@@ -2,7 +2,6 @@
 package com.github.mikephil.charting.components;
 
 import android.graphics.Paint;
-
 import com.github.mikephil.charting.utils.Utils;
 
 import java.util.List;
@@ -11,7 +10,7 @@ import java.util.List;
  * Class representing the legend of the chart. The legend will contain one entry
  * per color and DataSet. Multiple colors in one DataSet are grouped together.
  * The legend object is NOT available before setting data to the chart.
- * 
+ *
  * @author Philipp Jahoda
  */
 public class Legend extends ComponentBase {
@@ -31,22 +30,34 @@ public class Legend extends ComponentBase {
         LEFT_TO_RIGHT, RIGHT_TO_LEFT
     }
 
-    /** the legend colors */
+    /**
+     * the legend colors
+     */
     private int[] mColors;
 
-    /** the legend labels */
+    /**
+     * the legend labels
+     */
     private String[] mLabels;
 
-    /** the position relative to the chart the legend is drawn on */
+    /**
+     * the position relative to the chart the legend is drawn on
+     */
     private LegendPosition mPosition = LegendPosition.BELOW_CHART_LEFT;
 
-    /** the text direction for the legend */
+    /**
+     * the text direction for the legend
+     */
     private LegendDirection mDirection = LegendDirection.LEFT_TO_RIGHT;
 
-    /** the shape/form the legend colors are drawn in */
+    /**
+     * the shape/form the legend colors are drawn in
+     */
     private LegendForm mShape = LegendForm.SQUARE;
 
-    /** the size of the legend forms/shapes */
+    /**
+     * the size of the legend forms/shapes
+     */
     private float mFormSize = 8f;
 
     /**
@@ -66,10 +77,14 @@ public class Legend extends ComponentBase {
      */
     private float mFormToTextSpace = 5f;
 
-    /** the space that should be left between stacked forms */
-    private float mStackSpace = 3f;    
+    /**
+     * the space that should be left between stacked forms
+     */
+    private float mStackSpace = 3f;
 
-    /** default constructor */
+    /**
+     * default constructor
+     */
     public Legend() {
 
         mFormSize = Utils.convertDpToPixel(8f);
@@ -84,7 +99,7 @@ public class Legend extends ComponentBase {
 
     /**
      * Constructor. Provide colors and labels for the legend.
-     * 
+     *
      * @param colors
      * @param labels
      */
@@ -106,7 +121,7 @@ public class Legend extends ComponentBase {
 
     /**
      * Constructor. Provide colors and labels for the legend.
-     * 
+     *
      * @param colors
      * @param labels
      */
@@ -125,20 +140,24 @@ public class Legend extends ComponentBase {
         this.mColors = Utils.convertIntegers(colors);
         this.mLabels = Utils.convertStrings(labels);
     }
-    
+
     public void setColors(List<Integer> colors) {
-        mColors = Utils.convertIntegers(colors);;
+        mColors = Utils.convertIntegers(colors);
+        ;
     }
-    
+
     public void setLabels(List<String> labels) {
-        mLabels = Utils.convertStrings(labels);;
+        mLabels = Utils.convertStrings(labels);
+        ;
     }
 
     /**
      * returns the maximum length in pixels across all legend labels + formsize
      * + formtotextspace
-     * 
-     * @param p the paint object used for rendering the text
+     *
+     * @param p
+     *         the paint object used for rendering the text
+     *
      * @return
      */
     public float getMaximumEntryWidth(Paint p) {
@@ -151,8 +170,9 @@ public class Legend extends ComponentBase {
 
                 float length = (float) Utils.calcTextWidth(p, mLabels[i]);
 
-                if (length > max)
+                if (length > max) {
                     max = length;
+                }
             }
         }
 
@@ -161,8 +181,10 @@ public class Legend extends ComponentBase {
 
     /**
      * returns the maximum height in pixels across all legend labels
-     * 
-     * @param p the paint object used for rendering the text
+     *
+     * @param p
+     *         the paint object used for rendering the text
+     *
      * @return
      */
     public float getMaximumEntryHeight(Paint p) {
@@ -175,8 +197,9 @@ public class Legend extends ComponentBase {
 
                 float length = (float) Utils.calcTextHeight(p, mLabels[i]);
 
-                if (length > max)
+                if (length > max) {
                     max = length;
+                }
             }
         }
 
@@ -185,7 +208,7 @@ public class Legend extends ComponentBase {
 
     /**
      * returns all the colors the legend uses
-     * 
+     *
      * @return
      */
     public int[] getColors() {
@@ -194,7 +217,7 @@ public class Legend extends ComponentBase {
 
     /**
      * returns all the labels the legend uses
-     * 
+     *
      * @return
      */
     public String[] getLegendLabels() {
@@ -204,7 +227,7 @@ public class Legend extends ComponentBase {
     /**
      * Sets a custom array of labels for the legend. Make sure the labels array
      * has the same length as the colors array.
-     * 
+     *
      * @param labels
      */
     public void setLabels(String[] labels) {
@@ -213,8 +236,9 @@ public class Legend extends ComponentBase {
 
     /**
      * Returns the legend-label at the given index.
-     * 
+     *
      * @param index
+     *
      * @return
      */
     public String getLabel(int index) {
@@ -223,7 +247,7 @@ public class Legend extends ComponentBase {
 
     /**
      * returns the position of the legend relative to the chart
-     * 
+     *
      * @return
      */
     public LegendPosition getPosition() {
@@ -232,7 +256,7 @@ public class Legend extends ComponentBase {
 
     /**
      * sets the position of the legend relative to the whole chart
-     * 
+     *
      * @param pos
      */
     public void setPosition(LegendPosition pos) {
@@ -259,7 +283,7 @@ public class Legend extends ComponentBase {
 
     /**
      * returns the current form/shape that is set for the legend
-     * 
+     *
      * @return
      */
     public LegendForm getForm() {
@@ -268,7 +292,7 @@ public class Legend extends ComponentBase {
 
     /**
      * sets the form/shape of the legend forms
-     * 
+     *
      * @param shape
      */
     public void setForm(LegendForm shape) {
@@ -278,7 +302,7 @@ public class Legend extends ComponentBase {
     /**
      * sets the size in pixels of the legend forms, this is internally converted
      * in dp, default 8f
-     * 
+     *
      * @param size
      */
     public void setFormSize(float size) {
@@ -287,7 +311,7 @@ public class Legend extends ComponentBase {
 
     /**
      * returns the size in dp of the legend forms
-     * 
+     *
      * @return
      */
     public float getFormSize() {
@@ -297,7 +321,7 @@ public class Legend extends ComponentBase {
     /**
      * returns the space between the legend entries on a horizontal axis in
      * pixels
-     * 
+     *
      * @return
      */
     public float getXEntrySpace() {
@@ -307,7 +331,7 @@ public class Legend extends ComponentBase {
     /**
      * sets the space between the legend entries on a horizontal axis in pixels,
      * converts to dp internally
-     * 
+     *
      * @param space
      */
     public void setXEntrySpace(float space) {
@@ -316,7 +340,7 @@ public class Legend extends ComponentBase {
 
     /**
      * returns the space between the legend entries on a vertical axis in pixels
-     * 
+     *
      * @return
      */
     public float getYEntrySpace() {
@@ -326,7 +350,7 @@ public class Legend extends ComponentBase {
     /**
      * sets the space between the legend entries on a vertical axis in pixels,
      * converts to dp internally
-     * 
+     *
      * @param space
      */
     public void setYEntrySpace(float space) {
@@ -335,7 +359,7 @@ public class Legend extends ComponentBase {
 
     /**
      * returns the space between the form and the actual label/text
-     * 
+     *
      * @return
      */
     public float getFormToTextSpace() {
@@ -345,39 +369,39 @@ public class Legend extends ComponentBase {
     /**
      * sets the space between the form and the actual label/text, converts to dp
      * internally
-     * 
+     *
      * @param mFormToTextSpace
      */
     public void setFormToTextSpace(float space) {
         this.mFormToTextSpace = Utils.convertDpToPixel(space);
     }
 
-//    /**
-//     * applies the state from the legend in the parameter to this legend (except
-//     * colors, labels and offsets)
-//     * 
-//     * @param l
-//     */
-//    public void apply(Legend l) {
-//
-//        mPosition = l.mPosition;
-//        mShape = l.mShape;
-//        mTypeface = l.mTypeface;
-//        mFormSize = l.mFormSize;
-//        mXEntrySpace = l.mXEntrySpace;
-//        mYEntrySpace = l.mYEntrySpace;
-//        mFormToTextSpace = l.mFormToTextSpace;
-//        mTextSize = l.mTextSize;
-//        mStackSpace = l.mStackSpace;
-//        mTextColor = l.mTextColor;
-//        mEnabled = l.mEnabled;
-//        mXOffset = l.mXOffset;
-//        mYOffset = l.mYOffset;
-//    }
+    //    /**
+    //     * applies the state from the legend in the parameter to this legend (except
+    //     * colors, labels and offsets)
+    //     *
+    //     * @param l
+    //     */
+    //    public void apply(Legend l) {
+    //
+    //        mPosition = l.mPosition;
+    //        mShape = l.mShape;
+    //        mTypeface = l.mTypeface;
+    //        mFormSize = l.mFormSize;
+    //        mXEntrySpace = l.mXEntrySpace;
+    //        mYEntrySpace = l.mYEntrySpace;
+    //        mFormToTextSpace = l.mFormToTextSpace;
+    //        mTextSize = l.mTextSize;
+    //        mStackSpace = l.mStackSpace;
+    //        mTextColor = l.mTextColor;
+    //        mEnabled = l.mEnabled;
+    //        mXOffset = l.mXOffset;
+    //        mYOffset = l.mYOffset;
+    //    }
 
     /**
      * returns the space that is left out between stacked forms (with no label)
-     * 
+     *
      * @return
      */
     public float getStackSpace() {
@@ -386,7 +410,7 @@ public class Legend extends ComponentBase {
 
     /**
      * sets the space that is left out between stacked forms (with no label)
-     * 
+     *
      * @param space
      */
     public void setStackSpace(float space) {
@@ -395,7 +419,7 @@ public class Legend extends ComponentBase {
 
     /**
      * calculates the full width the fully drawn legend will use in pixels
-     * 
+     *
      * @return
      */
     public float getFullWidth(Paint labelpaint) {
@@ -408,17 +432,21 @@ public class Legend extends ComponentBase {
             if (mLabels[i] != null) {
 
                 // make a step to the left
-                if (mColors[i] != -2)
+                if (mColors[i] != -2) {
                     width += mFormSize + mFormToTextSpace;
+                }
 
                 width += Utils.calcTextWidth(labelpaint, mLabels[i]);
 
-                if (i < mLabels.length - 1)
+                if (i < mLabels.length - 1) {
                     width += mXEntrySpace;
-            } else {
+                }
+            }
+            else {
                 width += mFormSize;
-                if (i < mLabels.length - 1)
+                if (i < mLabels.length - 1) {
                     width += mStackSpace;
+                }
             }
         }
 
@@ -427,8 +455,9 @@ public class Legend extends ComponentBase {
 
     /**
      * Calculates the full height of the drawn legend.
-     * 
+     *
      * @param mLegendLabelPaint
+     *
      * @return
      */
     public float getFullHeight(Paint labelpaint) {
@@ -442,44 +471,50 @@ public class Legend extends ComponentBase {
 
                 height += Utils.calcTextHeight(labelpaint, mLabels[i]);
 
-                if (i < mLabels.length - 1)
+                if (i < mLabels.length - 1) {
                     height += mYEntrySpace;
+                }
             }
         }
 
         return height;
     }
 
-    /** the total width of the legend (needed width space) */
+    /**
+     * the total width of the legend (needed width space)
+     */
     public float mNeededWidth = 0f;
 
-    /** the total height of the legend (needed height space) */
+    /**
+     * the total height of the legend (needed height space)
+     */
     public float mNeededHeight = 0f;
-    
+
     public float mTextHeightMax = 0f;
-    
+
     public float mTextWidthMax = 0f;
 
     /**
      * Calculates the dimensions of the Legend. This includes the maximum width
      * and height of a single entry, as well as the total width and height of
      * the Legend.
-     * 
+     *
      * @param labelpaint
      */
     public void calculateDimensions(Paint labelpaint) {
 
         if (mPosition == LegendPosition.RIGHT_OF_CHART
-                || mPosition == LegendPosition.RIGHT_OF_CHART_CENTER
-                || mPosition == LegendPosition.LEFT_OF_CHART
-                || mPosition == LegendPosition.LEFT_OF_CHART_CENTER
-                || mPosition == LegendPosition.PIECHART_CENTER) {
+            || mPosition == LegendPosition.RIGHT_OF_CHART_CENTER
+            || mPosition == LegendPosition.LEFT_OF_CHART
+            || mPosition == LegendPosition.LEFT_OF_CHART_CENTER
+            || mPosition == LegendPosition.PIECHART_CENTER) {
             mNeededWidth = getMaximumEntryWidth(labelpaint);
             mNeededHeight = getFullHeight(labelpaint);
             mTextWidthMax = mNeededWidth;
             mTextHeightMax = getMaximumEntryHeight(labelpaint);
 
-        } else {
+        }
+        else {
 
             mNeededWidth = getFullWidth(labelpaint);
             mNeededHeight = getMaximumEntryHeight(labelpaint);

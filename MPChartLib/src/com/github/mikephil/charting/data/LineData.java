@@ -6,10 +6,10 @@ import java.util.List;
 
 /**
  * Data object that encapsulates all data associated with a LineChart.
- * 
+ *
  * @author Philipp Jahoda
  */
-public class LineData extends BarLineScatterCandleData<LineDataSet> {
+public class LineData<T extends LineDataSet> extends BarLineScatterCandleData<T> {
 
     public LineData() {
         super();
@@ -23,24 +23,24 @@ public class LineData extends BarLineScatterCandleData<LineDataSet> {
         super(xVals);
     }
 
-    public LineData(List<String> xVals, List<LineDataSet> dataSets) {
+    public LineData(List<String> xVals, List<T> dataSets) {
         super(xVals, dataSets);
     }
 
-    public LineData(String[] xVals, List<LineDataSet> dataSets) {
+    public LineData(String[] xVals, List<T> dataSets) {
         super(xVals, dataSets);
     }
 
-    public LineData(List<String> xVals, LineDataSet dataSet) {
+    public LineData(List<String> xVals, T dataSet) {
         super(xVals, toList(dataSet));
     }
 
-    public LineData(String[] xVals, LineDataSet dataSet) {
+    public LineData(String[] xVals, T dataSet) {
         super(xVals, toList(dataSet));
     }
 
-    private static List<LineDataSet> toList(LineDataSet dataSet) {
-        List<LineDataSet> sets = new ArrayList<LineDataSet>();
+    private static <T extends LineDataSet> List<T> toList(T dataSet) {
+        List<T> sets = new ArrayList<T>();
         sets.add(dataSet);
         return sets;
     }

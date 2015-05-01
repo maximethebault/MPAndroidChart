@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RadarDataSet extends LineRadarDataSet<Entry> {
-    
+
     public RadarDataSet(List<Entry> yVals, String label) {
         super(yVals, label);
     }

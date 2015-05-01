@@ -3,7 +3,7 @@ package com.github.mikephil.charting.utils;
 
 /**
  * Transformer class for the HorizontalBarChart.
- * 
+ *
  * @author Philipp Jahoda
  */
 public class TransformerHorizontalBarChart extends Transformer {
@@ -14,7 +14,7 @@ public class TransformerHorizontalBarChart extends Transformer {
 
     /**
      * Prepares the matrix that contains all offsets.
-     * 
+     *
      * @param chart
      */
     public void prepareMatrixOffset(boolean inverted) {
@@ -23,9 +23,10 @@ public class TransformerHorizontalBarChart extends Transformer {
 
         // offset.postTranslate(mOffsetLeft, getHeight() - mOffsetBottom);
 
-        if (!inverted)
+        if (!inverted) {
             mMatrixOffset.postTranslate(mViewPortHandler.offsetLeft(),
-                    mViewPortHandler.getChartHeight() - mViewPortHandler.offsetBottom());
+                                        mViewPortHandler.getChartHeight() - mViewPortHandler.offsetBottom());
+        }
         else {
             mMatrixOffset
                     .setTranslate(

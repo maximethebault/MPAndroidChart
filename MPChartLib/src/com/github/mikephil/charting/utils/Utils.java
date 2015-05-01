@@ -7,7 +7,6 @@ import android.graphics.PointF;
 import android.graphics.Rect;
 import android.util.DisplayMetrics;
 import android.util.Log;
-
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
 
 import java.text.DecimalFormat;
@@ -18,7 +17,7 @@ import java.util.List;
  * calling Utils.init(...) before usage. Inside the Chart.init() method, this is
  * done, if the Utils are used before that, Utils.init(...) needs to be called
  * manually.
- * 
+ *
  * @author Philipp Jahoda
  */
 public abstract class Utils {
@@ -27,7 +26,7 @@ public abstract class Utils {
 
     /**
      * initialize method, called inside the Chart.init() method.
-     * 
+     *
      * @param res
      */
     public static void init(Resources res) {
@@ -36,17 +35,21 @@ public abstract class Utils {
 
     /**
      * format a number properly with the given number of digits
-     * 
-     * @param number the number to format
-     * @param digits the number of digits
+     *
+     * @param number
+     *         the number to format
+     * @param digits
+     *         the number of digits
+     *
      * @return
      */
     public static String formatDecimal(double number, int digits) {
 
         StringBuffer a = new StringBuffer();
         for (int i = 0; i < digits; i++) {
-            if (i == 0)
+            if (i == 0) {
                 a.append(".");
+            }
             a.append("0");
         }
 
@@ -59,18 +62,20 @@ public abstract class Utils {
     /**
      * This method converts dp unit to equivalent pixels, depending on device
      * density. NEEDS UTILS TO BE INITIALIZED BEFORE USAGE.
-     * 
-     * @param dp A value in dp (density independent pixels) unit. Which we need
-     *            to convert into pixels
+     *
+     * @param dp
+     *         A value in dp (density independent pixels) unit. Which we need
+     *         to convert into pixels
+     *
      * @return A float value to represent px equivalent to dp depending on
-     *         device density
+     * device density
      */
     public static float convertDpToPixel(float dp) {
 
         if (mMetrics == null) {
 
             Log.e("MPChartLib-Utils",
-                    "Utils NOT INITIALIZED. You need to call Utils.init(...) at least once before calling Utils.convertDpToPixel(...). Otherwise conversion does not take place.");
+                  "Utils NOT INITIALIZED. You need to call Utils.init(...) at least once before calling Utils.convertDpToPixel(...). Otherwise conversion does not take place.");
             return dp;
             // throw new IllegalStateException(
             // "Utils NOT INITIALIZED. You need to call Utils.init(...) at least once before calling Utils.convertDpToPixel(...).");
@@ -84,8 +89,10 @@ public abstract class Utils {
     /**
      * This method converts device specific pixels to density independent
      * pixels. NEEDS UTILS TO BE INITIALIZED BEFORE USAGE.
-     * 
-     * @param px A value in px (pixels) unit. Which we need to convert into db
+     *
+     * @param px
+     *         A value in px (pixels) unit. Which we need to convert into db
+     *
      * @return A float value to represent dp equivalent to px value
      */
     public static float convertPixelsToDp(float px) {
@@ -93,7 +100,7 @@ public abstract class Utils {
         if (mMetrics == null) {
 
             Log.e("MPChartLib-Utils",
-                    "Utils NOT INITIALIZED. You need to call Utils.init(...) at least once before calling Utils.convertPixelsToDp(...). Otherwise conversion does not take place.");
+                  "Utils NOT INITIALIZED. You need to call Utils.init(...) at least once before calling Utils.convertPixelsToDp(...). Otherwise conversion does not take place.");
             return px;
             // throw new IllegalStateException(
             // "Utils NOT INITIALIZED. You need to call Utils.init(...) at least once before calling Utils.convertPixelsToDp(...).");
@@ -107,9 +114,10 @@ public abstract class Utils {
     /**
      * calculates the approximate width of a text, depending on a demo text
      * avoid repeated calls (e.g. inside drawing methods)
-     * 
+     *
      * @param paint
      * @param demoText
+     *
      * @return
      */
     public static int calcTextWidth(Paint paint, String demoText) {
@@ -119,9 +127,10 @@ public abstract class Utils {
     /**
      * calculates the approximate height of a text, depending on a demo text
      * avoid repeated calls (e.g. inside drawing methods)
-     * 
+     *
      * @param paint
      * @param demoText
+     *
      * @return
      */
     public static int calcTextHeight(Paint paint, String demoText) {
@@ -156,26 +165,34 @@ public abstract class Utils {
 
     /**
      * returns the appropriate number of format digits for a legend value
-     * 
+     *
      * @param delta
-     * @param bonus - additional digits
+     * @param bonus
+     *         - additional digits
+     *
      * @return
      */
     public static int getLegendFormatDigits(float step, int bonus) {
 
         if (step < 0.0000099) {
             return 6 + bonus;
-        } else if (step < 0.000099) {
+        }
+        else if (step < 0.000099) {
             return 5 + bonus;
-        } else if (step < 0.00099) {
+        }
+        else if (step < 0.00099) {
             return 4 + bonus;
-        } else if (step < 0.0099) {
+        }
+        else if (step < 0.0099) {
             return 3 + bonus;
-        } else if (step < 0.099) {
+        }
+        else if (step < 0.099) {
             return 2 + bonus;
-        } else if (step < 0.99) {
+        }
+        else if (step < 0.99) {
             return 1 + bonus;
-        } else {
+        }
+        else {
             return 0 + bonus;
         }
     }
@@ -191,10 +208,12 @@ public abstract class Utils {
     /**
      * Formats the given number to the given number of decimals, and returns the
      * number as a string, maximum 35 characters.
-     * 
+     *
      * @param number
      * @param digitCount
-     * @param separateTousands set this to true to separate thousands values
+     * @param separateTousands
+     *         set this to true to separate thousands values
+     *
      * @return
      */
     public static String formatNumber(float number, int digitCount, boolean separateThousands) {
@@ -239,7 +258,8 @@ public abstract class Utils {
                 decimalPointAdded = true;
 
                 // add thousand separators
-            } else if (separateThousands && lval != 0 && charCount > digitCount) {
+            }
+            else if (separateThousands && lval != 0 && charCount > digitCount) {
 
                 if (decimalPointAdded) {
 
@@ -248,7 +268,8 @@ public abstract class Utils {
                         charCount++;
                     }
 
-                } else {
+                }
+                else {
 
                     if ((charCount - digitCount) % 4 == 3) {
                         out[ind--] = '.';
@@ -278,8 +299,9 @@ public abstract class Utils {
 
     /**
      * rounds the given number to the next significant number
-     * 
+     *
      * @param number
+     *
      * @return
      */
     public static float roundToNextSignificant(double number) {
@@ -293,8 +315,9 @@ public abstract class Utils {
     /**
      * Returns the appropriate number of decimals to be used for the provided
      * number.
-     * 
+     *
      * @param number
+     *
      * @return
      */
     public static int getDecimals(float number) {
@@ -305,8 +328,9 @@ public abstract class Utils {
 
     /**
      * Converts the provided Integer List to an int array.
-     * 
+     *
      * @param integers
+     *
      * @return
      */
     public static int[] convertIntegers(List<Integer> integers) {
@@ -322,8 +346,9 @@ public abstract class Utils {
 
     /**
      * Converts the provided String List to a String array.
-     * 
+     *
      * @param labels
+     *
      * @return
      */
     public static String[] convertStrings(List<String> strings) {
@@ -340,29 +365,33 @@ public abstract class Utils {
     /**
      * Replacement for the Math.nextUp(...) method that is only available in
      * HONEYCOMB and higher. Dat's some seeeeek sheeet.
-     * 
+     *
      * @param d
+     *
      * @return
      */
     public static double nextUp(double d) {
-        if (d == Double.POSITIVE_INFINITY)
+        if (d == Double.POSITIVE_INFINITY) {
             return d;
+        }
         else {
             d += 0.0d;
             return Double.longBitsToDouble(Double.doubleToRawLongBits(d) +
-                    ((d >= 0.0d) ? +1L : -1L));
+                                           ((d >= 0.0d) ? +1L : -1L));
         }
     }
 
     /**
      * Returns the index of the DataSet that contains the closest value on the
      * y-axis. This is needed for highlighting.
-     * 
-     * @param valsAtIndex all the values at a specific index
+     *
+     * @param valsAtIndex
+     *         all the values at a specific index
+     *
      * @return
      */
     public static int getClosestDataSetIndex(List<SelInfo> valsAtIndex, float val,
-            AxisDependency axis) {
+                                             AxisDependency axis) {
 
         int index = -1;
         float distance = Float.MAX_VALUE;
@@ -389,14 +418,15 @@ public abstract class Utils {
     /**
      * Returns the minimum distance from a touch-y-value (in pixels) to the
      * closest y-value (in pixels) that is displayed in the chart.
-     * 
+     *
      * @param valsAtIndex
      * @param val
      * @param axis
+     *
      * @return
      */
     public static float getMinimumDistance(List<SelInfo> valsAtIndex, float val,
-            AxisDependency axis) {
+                                           AxisDependency axis) {
 
         float distance = Float.MAX_VALUE;
 
@@ -419,16 +449,18 @@ public abstract class Utils {
     /**
      * Calculates the position around a center point, depending on the distance
      * from the center, and the angle of the position around the center.
-     * 
+     *
      * @param center
      * @param dist
-     * @param angle in degrees, converted to radians internally
+     * @param angle
+     *         in degrees, converted to radians internally
+     *
      * @return
      */
     public static PointF getPosition(PointF center, float dist, float angle) {
 
         PointF p = new PointF((float) (center.x + dist * Math.cos(Math.toRadians(angle))),
-                (float) (center.y + dist * Math.sin(Math.toRadians(angle))));
+                              (float) (center.y + dist * Math.sin(Math.toRadians(angle))));
         return p;
     }
 }

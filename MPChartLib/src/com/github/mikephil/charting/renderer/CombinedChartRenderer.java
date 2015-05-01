@@ -2,7 +2,6 @@
 package com.github.mikephil.charting.renderer;
 
 import android.graphics.Canvas;
-
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.charts.CombinedChart;
 import com.github.mikephil.charting.charts.CombinedChart.DrawOrder;
@@ -21,7 +20,7 @@ public class CombinedChartRenderer extends DataRenderer {
     protected List<DataRenderer> mRenderers;
 
     public CombinedChartRenderer(CombinedChart chart, ChartAnimator animator,
-            ViewPortHandler viewPortHandler) {
+                                 ViewPortHandler viewPortHandler) {
         super(animator, viewPortHandler);
 
         createRenderers(chart, animator, viewPortHandler);
@@ -30,13 +29,13 @@ public class CombinedChartRenderer extends DataRenderer {
     /**
      * Creates the renderers needed for this combined-renderer in the required
      * order. Also takes the DrawOrder into consideration.
-     * 
+     *
      * @param chart
      * @param animator
      * @param viewPortHandler
      */
     protected void createRenderers(CombinedChart chart, ChartAnimator animator,
-            ViewPortHandler viewPortHandler) {
+                                   ViewPortHandler viewPortHandler) {
 
         mRenderers = new ArrayList<DataRenderer>();
 
@@ -46,21 +45,25 @@ public class CombinedChartRenderer extends DataRenderer {
 
             switch (order) {
                 case BAR:
-                    if (chart.getBarData() != null)
+                    if (chart.getBarData() != null) {
                         mRenderers.add(new BarChartRenderer(chart, animator, viewPortHandler));
+                    }
                     break;
                 case LINE:
-                    if (chart.getLineData() != null)
+                    if (chart.getLineData() != null) {
                         mRenderers.add(new LineChartRenderer(chart, animator, viewPortHandler));
+                    }
                     break;
                 case CANDLE:
-                    if (chart.getCandleData() != null)
+                    if (chart.getCandleData() != null) {
                         mRenderers.add(new CandleStickChartRenderer(chart, animator,
-                                viewPortHandler));
+                                                                    viewPortHandler));
+                    }
                     break;
                 case SCATTER:
-                    if (chart.getScatterData() != null)
+                    if (chart.getScatterData() != null) {
                         mRenderers.add(new ScatterChartRenderer(chart, animator, viewPortHandler));
+                    }
                     break;
             }
         }
@@ -102,14 +105,17 @@ public class CombinedChartRenderer extends DataRenderer {
 
     /**
      * Returns the sub-renderer object at the specified index.
-     * 
+     *
      * @param index
+     *
      * @return
      */
     public DataRenderer getSubRenderer(int index) {
-        if (index >= mRenderers.size() || index < 0)
+        if (index >= mRenderers.size() || index < 0) {
             return null;
-        else
+        }
+        else {
             return mRenderers.get(index);
+        }
     }
 }

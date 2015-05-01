@@ -8,7 +8,6 @@ import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
-
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.charts.PieRadarChartBase;
 import com.github.mikephil.charting.charts.RadarChart;
@@ -20,7 +19,7 @@ import java.util.List;
 
 /**
  * Touchlistener for the PieChart.
- * 
+ *
  * @author Philipp Jahoda
  */
 public class PieRadarChartTouchListener extends SimpleOnGestureListener implements OnTouchListener {
@@ -46,8 +45,9 @@ public class PieRadarChartTouchListener extends SimpleOnGestureListener implemen
     @Override
     public boolean onTouch(View v, MotionEvent e) {
 
-        if (mGestureDetector.onTouchEvent(e))
+        if (mGestureDetector.onTouchEvent(e)) {
             return true;
+        }
 
         // if rotation by touch is enabled
         if (mChart.isRotationEnabled()) {
@@ -65,11 +65,12 @@ public class PieRadarChartTouchListener extends SimpleOnGestureListener implemen
                 case MotionEvent.ACTION_MOVE:
 
                     if (mTouchMode == NONE
-                            && distance(x, mTouchStartPoint.x, y, mTouchStartPoint.y)
-                            > Utils.convertDpToPixel(8f)) {
+                        && distance(x, mTouchStartPoint.x, y, mTouchStartPoint.y)
+                           > Utils.convertDpToPixel(8f)) {
                         mTouchMode = ROTATE;
                         mChart.disableScroll();
-                    } else if (mTouchMode == ROTATE) {
+                    }
+                    else if (mTouchMode == ROTATE) {
                         mChart.updateRotation(x, y);
                         mChart.invalidate();
                     }
@@ -99,7 +100,9 @@ public class PieRadarChartTouchListener extends SimpleOnGestureListener implemen
         return true;
     }
 
-    /** reference to the last highlighted object */
+    /**
+     * reference to the last highlighted object
+     */
     private Highlight mLastHighlight = null;
 
     @Override
@@ -120,7 +123,8 @@ public class PieRadarChartTouchListener extends SimpleOnGestureListener implemen
             mChart.highlightValues(null);
             mLastHighlight = null;
 
-        } else {
+        }
+        else {
 
             float angle = mChart.getAngleForPoint(e.getX(), e.getY());
 
@@ -136,7 +140,8 @@ public class PieRadarChartTouchListener extends SimpleOnGestureListener implemen
                 mChart.highlightValues(null);
                 mLastHighlight = null;
 
-            } else {
+            }
+            else {
 
                 List<SelInfo> valsAtIndex = mChart.getYValsAtIndex(index);
 
@@ -148,7 +153,7 @@ public class PieRadarChartTouchListener extends SimpleOnGestureListener implemen
                 if (mChart instanceof RadarChart) {
 
                     dataSetIndex = Utils.getClosestDataSetIndex(valsAtIndex, distance
-                            / ((RadarChart) mChart).getFactor(), null);
+                                                                             / ((RadarChart) mChart).getFactor(), null);
                 }
 
                 Highlight h = new Highlight(index, dataSetIndex);
@@ -157,7 +162,8 @@ public class PieRadarChartTouchListener extends SimpleOnGestureListener implemen
 
                     mChart.highlightTouch(null);
                     mLastHighlight = null;
-                } else {
+                }
+                else {
 
                     mChart.highlightTouch(h);
                     mLastHighlight = h;
@@ -180,11 +186,12 @@ public class PieRadarChartTouchListener extends SimpleOnGestureListener implemen
 
     /**
      * returns the distance between two points
-     * 
+     *
      * @param eventX
      * @param startX
      * @param eventY
      * @param startY
+     *
      * @return
      */
     private static float distance(float eventX, float startX, float eventY, float startY) {

@@ -3,20 +3,22 @@ package com.github.mikephil.charting.charts;
 
 import android.content.Context;
 import android.util.AttributeSet;
-
 import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.LineDataProvider;
 import com.github.mikephil.charting.renderer.LineChartRenderer;
 import com.github.mikephil.charting.utils.FillFormatter;
 
 /**
  * Chart that draws lines, surfaces, circles, ...
- * 
+ *
  * @author Philipp Jahoda
  */
-public class LineChart extends BarLineChartBase<LineData> implements LineDataProvider {
+public class LineChart<T extends LineData<? extends LineDataSet>> extends BarLineChartBase<T> implements LineDataProvider {
 
-    /** the width of the highlighning line */
+    /**
+     * the width of the highlighning line
+     */
     protected float mHighlightWidth = 3f;
 
     private FillFormatter mFillFormatter;
@@ -38,7 +40,7 @@ public class LineChart extends BarLineChartBase<LineData> implements LineDataPro
         super.init();
 
         mRenderer = new LineChartRenderer(this, mAnimator, mViewPortHandler);
-        
+
         mFillFormatter = new DefaultFillFormatter();
     }
 
@@ -52,13 +54,14 @@ public class LineChart extends BarLineChartBase<LineData> implements LineDataPro
         // mDeltaX = 1;
         // }
 
-        if (mDeltaX == 0 && mData.getYValCount() > 0)
+        if (mDeltaX == 0 && mData.getYValCount() > 0) {
             mDeltaX = 1;
+        }
     }
-    
+
     /**
      * set the width of the highlightning lines, default 3f
-     * 
+     *
      * @param width
      */
     public void setHighlightLineWidth(float width) {
@@ -67,7 +70,7 @@ public class LineChart extends BarLineChartBase<LineData> implements LineDataPro
 
     /**
      * returns the width of the highlightning line, default 3f
-     * 
+     *
      * @return
      */
     public float getHighlightLineWidth() {
@@ -77,19 +80,22 @@ public class LineChart extends BarLineChartBase<LineData> implements LineDataPro
     @Override
     public void setFillFormatter(FillFormatter formatter) {
 
-        if (formatter == null)
+        if (formatter == null) {
             formatter = new DefaultFillFormatter();
-        else
+        }
+        else {
             mFillFormatter = formatter;
+        }
     }
 
     @Override
     public FillFormatter getFillFormatter() {
         return mFillFormatter;
     }
-    
+
+    @SuppressWarnings("unchecked")
     @Override
-    public LineData getLineData() {
-        return mData;
+    public LineData<LineDataSet> getLineData() {
+        return (LineData<LineDataSet>) mData;
     }
 }

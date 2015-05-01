@@ -19,14 +19,14 @@ public class CircleBuffer extends AbstractBuffer<Entry> {
     @Override
     public void feed(List<Entry> entries) {
 
-        int size = (int)Math.ceil((mTo - mFrom) * phaseX + mFrom);
+        int size = (int) Math.ceil((mTo - mFrom) * phaseX + mFrom);
 
         for (int i = mFrom; i < size; i++) {
 
             Entry e = entries.get(i);
             addCircle(e.getXIndex(), e.getVal() * phaseY);
         }
-        
+
         reset();
     }
 }

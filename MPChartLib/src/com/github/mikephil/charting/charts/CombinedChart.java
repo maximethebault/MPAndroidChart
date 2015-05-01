@@ -3,12 +3,7 @@ package com.github.mikephil.charting.charts;
 
 import android.content.Context;
 import android.util.AttributeSet;
-
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.CandleData;
-import com.github.mikephil.charting.data.CombinedData;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.ScatterData;
+import com.github.mikephil.charting.data.*;
 import com.github.mikephil.charting.interfaces.BarDataProvider;
 import com.github.mikephil.charting.interfaces.CandleDataProvider;
 import com.github.mikephil.charting.interfaces.LineDataProvider;
@@ -19,16 +14,20 @@ import com.github.mikephil.charting.utils.FillFormatter;
 /**
  * This chart class allows the combination of lines, bars, scatter and candle
  * data all displayed in one chart area.
- * 
+ *
  * @author Philipp Jahoda
  */
 public class CombinedChart extends BarLineChartBase<CombinedData> implements LineDataProvider,
         BarDataProvider, ScatterDataProvider, CandleDataProvider {
 
-    /** the fill-formatter used for determining the position of the fill-line */
+    /**
+     * the fill-formatter used for determining the position of the fill-line
+     */
     protected FillFormatter mFillFormatter;
 
-    /** flag that enables or disables the highlighting arrow */
+    /**
+     * flag that enables or disables the highlighting arrow
+     */
     private boolean mDrawHighlightArrow = false;
 
     /**
@@ -102,10 +101,12 @@ public class CombinedChart extends BarLineChartBase<CombinedData> implements Lin
 
     public void setFillFormatter(FillFormatter formatter) {
 
-        if (formatter == null)
+        if (formatter == null) {
             formatter = new DefaultFillFormatter();
-        else
+        }
+        else {
             mFillFormatter = formatter;
+        }
     }
 
     @Override
@@ -114,30 +115,34 @@ public class CombinedChart extends BarLineChartBase<CombinedData> implements Lin
     }
 
     @Override
-    public LineData getLineData() {
-        if (mData == null)
+    public LineData<LineDataSet> getLineData() {
+        if (mData == null) {
             return null;
+        }
         return mData.getLineData();
     }
 
     @Override
     public BarData getBarData() {
-        if (mData == null)
+        if (mData == null) {
             return null;
+        }
         return mData.getBarData();
     }
 
     @Override
     public ScatterData getScatterData() {
-        if (mData == null)
+        if (mData == null) {
             return null;
+        }
         return mData.getScatterData();
     }
 
     @Override
     public CandleData getCandleData() {
-        if (mData == null)
+        if (mData == null) {
             return null;
+        }
         return mData.getCandleData();
     }
 
@@ -163,7 +168,7 @@ public class CombinedChart extends BarLineChartBase<CombinedData> implements Lin
 
     /**
      * set this to true to draw the highlightning arrow
-     * 
+     *
      * @param enabled
      */
     public void setDrawHighlightArrow(boolean enabled) {
@@ -173,7 +178,7 @@ public class CombinedChart extends BarLineChartBase<CombinedData> implements Lin
     /**
      * If set to true, all values are drawn above their bars, instead of below
      * their top.
-     * 
+     *
      * @param enabled
      */
     public void setDrawValueAboveBar(boolean enabled) {
@@ -183,7 +188,7 @@ public class CombinedChart extends BarLineChartBase<CombinedData> implements Lin
     /**
      * if set to true, all values of a stack are drawn individually, and not
      * just their sum
-     * 
+     *
      * @param enabled
      */
     public void setDrawValuesForWholeStack(boolean enabled) {
@@ -193,7 +198,7 @@ public class CombinedChart extends BarLineChartBase<CombinedData> implements Lin
     /**
      * If set to true, a grey area is drawn behind each bar that indicates the
      * maximum value. Enabling his will reduce performance by about 50%.
-     * 
+     *
      * @param enabled
      */
     public void setDrawBarShadow(boolean enabled) {
@@ -202,7 +207,7 @@ public class CombinedChart extends BarLineChartBase<CombinedData> implements Lin
 
     /**
      * Returns the currently set draw order.
-     * 
+     *
      * @return
      */
     public DrawOrder[] getDrawOrder() {
@@ -214,12 +219,13 @@ public class CombinedChart extends BarLineChartBase<CombinedData> implements Lin
      * earlier you place them in the provided array, the further they will be in
      * the background. e.g. if you provide new DrawOrer[] { DrawOrder.BAR,
      * DrawOrder.LINE }, the bars will be drawn behind the lines.
-     * 
+     *
      * @param order
      */
     public void setDrawOrder(DrawOrder[] order) {
-        if (order == null || order.length <= 0)
+        if (order == null || order.length <= 0) {
             return;
+        }
         mDrawOrder = order;
     }
 }

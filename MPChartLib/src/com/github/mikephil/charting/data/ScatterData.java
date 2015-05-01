@@ -9,7 +9,7 @@ public class ScatterData extends BarLineScatterCandleData<ScatterDataSet> {
     public ScatterData() {
         super();
     }
-    
+
     public ScatterData(List<String> xVals) {
         super(xVals);
     }
@@ -42,7 +42,7 @@ public class ScatterData extends BarLineScatterCandleData<ScatterDataSet> {
 
     /**
      * Returns the maximum shape-size across all DataSets.
-     * 
+     *
      * @return
      */
     public float getGreatestShapeSize() {
@@ -52,8 +52,9 @@ public class ScatterData extends BarLineScatterCandleData<ScatterDataSet> {
         for (ScatterDataSet set : mDataSets) {
             float size = set.getScatterShapeSize();
 
-            if (size > max)
+            if (size > max) {
                 max = size;
+            }
         }
 
         return max;

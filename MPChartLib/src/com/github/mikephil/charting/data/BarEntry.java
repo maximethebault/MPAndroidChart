@@ -3,18 +3,21 @@ package com.github.mikephil.charting.data;
 
 /**
  * Entry class for the BarChart. (especially stacked bars)
- * 
+ *
  * @author Philipp Jahoda
  */
 public class BarEntry extends Entry {
 
-    /** the values the stacked barchart holds */
+    /**
+     * the values the stacked barchart holds
+     */
     private float[] mVals;
 
     /**
      * Constructor for stacked bar entries.
-     * 
-     * @param vals - the stack values
+     *
+     * @param vals
+     *         - the stack values
      * @param xIndex
      */
     public BarEntry(float[] vals, int xIndex) {
@@ -25,7 +28,7 @@ public class BarEntry extends Entry {
 
     /**
      * Constructor for normal bars (not stacked).
-     * 
+     *
      * @param val
      * @param xIndex
      */
@@ -35,10 +38,12 @@ public class BarEntry extends Entry {
 
     /**
      * Constructor for stacked bar entries.
-     * 
-     * @param vals - the stack values
+     *
+     * @param vals
+     *         - the stack values
      * @param xIndex
-     * @param label Additional description label.
+     * @param label
+     *         Additional description label.
      */
     public BarEntry(float[] vals, int xIndex, String label) {
         super(calcSum(vals), xIndex, label);
@@ -48,10 +53,11 @@ public class BarEntry extends Entry {
 
     /**
      * Constructor for normal bars (not stacked).
-     * 
+     *
      * @param val
      * @param xIndex
-     * @param data Spot for additional data this Entry represents.
+     * @param data
+     *         Spot for additional data this Entry represents.
      */
     public BarEntry(float val, int xIndex, Object data) {
         super(val, xIndex, data);
@@ -70,7 +76,7 @@ public class BarEntry extends Entry {
     /**
      * Returns the stacked values this BarEntry represents, or null, if only a
      * single value is represented (then, use getVal()).
-     * 
+     *
      * @return
      */
     public float[] getVals() {
@@ -79,7 +85,7 @@ public class BarEntry extends Entry {
 
     /**
      * Set the array of values this BarEntry should represent.
-     * 
+     *
      * @param vals
      */
     public void setVals(float[] vals) {
@@ -90,46 +96,50 @@ public class BarEntry extends Entry {
      * Returns the closest value inside the values array (for stacked barchart)
      * to the value given as a parameter. The closest value must be higher
      * (above) the provided value.
-     * 
+     *
      * @param val
+     *
      * @return
      */
     public int getClosestIndexAbove(float val) {
 
-        if (mVals == null)
+        if (mVals == null) {
             return 0;
-        
+        }
+
         int index = mVals.length - 1;
         float remainder = 0f;
 
-        while(index > 0 && val > mVals[index] + remainder) {
+        while (index > 0 && val > mVals[index] + remainder) {
             remainder += mVals[index];
             index--;
         }
-        
+
         return index;
     }
-    
+
     public float getBelowSum(int stackIndex) {
-        
-        if (mVals == null)
+
+        if (mVals == null) {
             return 0;
-        
+        }
+
         float remainder = 0f;
         int index = mVals.length - 1;
-        
-        while(index > stackIndex && index >= 0) {
+
+        while (index > stackIndex && index >= 0) {
             remainder += mVals[index];
             index--;
         }
-        
+
         return remainder;
     }
 
     /**
      * Calculates the sum across all values.
-     * 
+     *
      * @param vals
+     *
      * @return
      */
     private static float calcSum(float[] vals) {

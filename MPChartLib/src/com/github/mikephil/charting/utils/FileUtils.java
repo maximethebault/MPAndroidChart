@@ -4,24 +4,17 @@ package com.github.mikephil.charting.utils;
 import android.content.res.AssetManager;
 import android.os.Environment;
 import android.util.Log;
-
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Utilities class for interacting with the assets and the devices storage to
  * load and save DataSet objects from and to .txt files.
- * 
+ *
  * @author Philipp Jahoda
  */
 public class FileUtils {
@@ -30,8 +23,10 @@ public class FileUtils {
 
     /**
      * Loads a an Array of Entries from a textfile from the sd-card.
-     * 
-     * @param path the name of the file on the sd-card (+ path if needed)
+     *
+     * @param path
+     *         the name of the file on the sd-card (+ path if needed)
+     *
      * @return
      */
     public static List<Entry> loadEntriesFromFile(String path) {
@@ -53,7 +48,8 @@ public class FileUtils {
 
                 if (split.length <= 2) {
                     entries.add(new Entry(Float.parseFloat(split[0]), Integer.parseInt(split[1])));
-                } else {
+                }
+                else {
 
                     float[] vals = new float[split.length - 1];
 
@@ -64,7 +60,8 @@ public class FileUtils {
                     entries.add(new BarEntry(vals, Integer.parseInt(split[split.length - 1])));
                 }
             }
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             Log.e(LOG, e.toString());
         }
 
@@ -101,9 +98,11 @@ public class FileUtils {
 
     /**
      * Loads an array of Entries from a textfile from the assets folder.
-     * 
+     *
      * @param am
-     * @param path the name of the file in the assets folder (+ path if needed)
+     * @param path
+     *         the name of the file in the assets folder (+ path if needed)
+     *
      * @return
      */
     public static List<Entry> loadEntriesFromAssets(AssetManager am, String path) {
@@ -123,7 +122,8 @@ public class FileUtils {
 
                 if (split.length <= 2) {
                     entries.add(new Entry(Float.parseFloat(split[0]), Integer.parseInt(split[1])));
-                } else {
+                }
+                else {
 
                     float[] vals = new float[split.length - 1];
 
@@ -135,15 +135,18 @@ public class FileUtils {
                 }
                 line = reader.readLine();
             }
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             Log.e(LOG, e.toString());
 
-        } finally {
+        }
+        finally {
 
             if (reader != null) {
                 try {
                     reader.close();
-                } catch (IOException e) {
+                }
+                catch (IOException e) {
                     Log.e(LOG, e.toString());
                 }
             }
@@ -190,7 +193,7 @@ public class FileUtils {
 
     /**
      * Saves an Array of Entries to the specified location on the sdcard
-     * 
+     *
      * @param ds
      * @param path
      */
@@ -199,18 +202,15 @@ public class FileUtils {
         File sdcard = Environment.getExternalStorageDirectory();
 
         File saved = new File(sdcard, path);
-        if (!saved.exists())
-        {
-            try
-            {
+        if (!saved.exists()) {
+            try {
                 saved.createNewFile();
-            } catch (IOException e)
-            {
+            }
+            catch (IOException e) {
                 Log.e(LOG, e.toString());
             }
         }
-        try
-        {
+        try {
             // BufferedWriter for performance, true to set append to file flag
             BufferedWriter buf = new BufferedWriter(new FileWriter(saved, true));
 
@@ -221,8 +221,8 @@ public class FileUtils {
             }
 
             buf.close();
-        } catch (IOException e)
-        {
+        }
+        catch (IOException e) {
             Log.e(LOG, e.toString());
         }
     }
@@ -246,15 +246,18 @@ public class FileUtils {
 
                 line = reader.readLine();
             }
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             Log.e(LOG, e.toString());
 
-        } finally {
+        }
+        finally {
 
             if (reader != null) {
                 try {
                     reader.close();
-                } catch (IOException e) {
+                }
+                catch (IOException e) {
                     Log.e(LOG, e.toString());
                 }
             }

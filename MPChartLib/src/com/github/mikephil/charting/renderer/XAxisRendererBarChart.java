@@ -2,7 +2,6 @@
 package com.github.mikephil.charting.renderer;
 
 import android.graphics.Canvas;
-
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
@@ -15,7 +14,7 @@ public class XAxisRendererBarChart extends XAxisRenderer {
     protected BarChart mChart;
 
     public XAxisRendererBarChart(ViewPortHandler viewPortHandler, XAxis xAxis, Transformer trans,
-            BarChart chart) {
+                                 BarChart chart) {
         super(viewPortHandler, xAxis, trans);
 
         this.mChart = chart;
@@ -23,7 +22,7 @@ public class XAxisRendererBarChart extends XAxisRenderer {
 
     /**
      * draws the x-labels on the specified y-position
-     * 
+     *
      * @param pos
      */
     @Override
@@ -39,14 +38,14 @@ public class XAxisRendererBarChart extends XAxisRenderer {
         float div = (float) step + (step > 1 ? bd.getGroupSpace() : 0f);
 
         float min = (float) mMinX
-                / div;
+                    / div;
         float max = (float) mMaxX
-                / div;
+                    / div;
 
         for (int i = (int) min; i <= max; i += mXAxis.mAxisLabelModulus) {
 
             position[0] = i * step + i * bd.getGroupSpace()
-                    + bd.getGroupSpace() / 2f;
+                          + bd.getGroupSpace() / 2f;
 
             // consider groups (center label for each group)
             if (step > 1) {
@@ -56,7 +55,7 @@ public class XAxisRendererBarChart extends XAxisRenderer {
             mTrans.pointValuesToPixel(position);
 
             if (mViewPortHandler.isInBoundsX(position[0]) && i >= 0
-                    && i < mXAxis.getValues().size()) {
+                && i < mXAxis.getValues().size()) {
 
                 String label = mXAxis.getValues().get(i);
 
@@ -67,11 +66,13 @@ public class XAxisRendererBarChart extends XAxisRenderer {
                         float width = Utils.calcTextWidth(mAxisLabelPaint, label);
 
                         if (width > mViewPortHandler.offsetRight() * 2
-                                && position[0] + width > mViewPortHandler.getChartWidth())
+                            && position[0] + width > mViewPortHandler.getChartWidth()) {
                             position[0] -= width / 2;
+                        }
 
                         // avoid clipping of the first
-                    } else if (i == 0) {
+                    }
+                    else if (i == 0) {
 
                         float width = Utils.calcTextWidth(mAxisLabelPaint, label);
                         position[0] += width / 2;
@@ -79,8 +80,8 @@ public class XAxisRendererBarChart extends XAxisRenderer {
                 }
 
                 c.drawText(label, position[0],
-                        pos,
-                        mAxisLabelPaint);
+                           pos,
+                           mAxisLabelPaint);
             }
         }
     }
@@ -90,8 +91,9 @@ public class XAxisRendererBarChart extends XAxisRenderer {
 
         calcXBounds(mTrans);
 
-        if (!mXAxis.isDrawGridLinesEnabled() || !mXAxis.isEnabled())
+        if (!mXAxis.isDrawGridLinesEnabled() || !mXAxis.isEnabled()) {
             return;
+        }
 
         float[] position = new float[] {
                 0f, 0f
@@ -105,9 +107,9 @@ public class XAxisRendererBarChart extends XAxisRenderer {
         float div = (float) step + (step > 1 ? bd.getGroupSpace() : 0f);
 
         float min = (float) mMinX
-                / div;
+                    / div;
         float max = (float) mMaxX
-                / div;
+                    / div;
 
         for (int i = (int) min; i <= max; i += mXAxis.mAxisLabelModulus) {
 
@@ -118,7 +120,7 @@ public class XAxisRendererBarChart extends XAxisRenderer {
             if (mViewPortHandler.isInBoundsX(position[0])) {
 
                 c.drawLine(position[0], mViewPortHandler.offsetTop(), position[0],
-                        mViewPortHandler.contentBottom(), mGridPaint);
+                           mViewPortHandler.contentBottom(), mGridPaint);
             }
         }
     }

@@ -6,6 +6,8 @@ import com.github.mikephil.charting.utils.Transformer;
 public interface BarLineScatterCandleDataProvider extends ChartInterface {
 
     public Transformer getTransformer(AxisDependency axis);
+
     public int getMaxVisibleCount();
+
     public boolean isInverted(AxisDependency axis);
 }

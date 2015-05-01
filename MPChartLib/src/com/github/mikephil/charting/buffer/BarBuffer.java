@@ -28,7 +28,7 @@ public class BarBuffer extends AbstractBuffer<BarEntry> {
     public void setDataSet(int index) {
         this.mDataSetIndex = index;
     }
-    
+
     public void setInverted(boolean inverted) {
         this.mInverted = inverted;
     }
@@ -57,29 +57,32 @@ public class BarBuffer extends AbstractBuffer<BarEntry> {
 
             // calculate the x-position, depending on datasetcount
             float x = e.getXIndex() + i * dataSetOffset + mDataSetIndex
-                    + mGroupSpace * i + groupSpaceHalf;
+                      + mGroupSpace * i + groupSpaceHalf;
             float y = e.getVal();
-            float [] vals = e.getVals();
-            
-            if(mInverted) { // inverted axis, here, I chose performance over readability
-                
-                if(!mContainsStacks || vals == null) {
-                    
+            float[] vals = e.getVals();
+
+            if (mInverted) { // inverted axis, here, I chose performance over readability
+
+                if (!mContainsStacks || vals == null) {
+
                     float left = x - barWidth + barSpaceHalf;
                     float right = x + barWidth - barSpaceHalf;
                     float bottom = y >= 0 ? y : 0;
                     float top = y <= 0 ? y : 0;
-                    
+
                     // multiply the height of the rect with the phase
-                    if (top > 0)
+                    if (top > 0) {
                         top *= phaseY;
-                    else
+                    }
+                    else {
                         bottom *= phaseY;
+                    }
 
                     addBar(left, top, right, bottom);
-                    
-                } else {
-                    
+
+                }
+                else {
+
                     float all = e.getVal();
 
                     // fill the stack
@@ -94,34 +97,40 @@ public class BarBuffer extends AbstractBuffer<BarEntry> {
                         float top = y <= 0 ? y : 0;
 
                         // multiply the height of the rect with the phase
-                        if (top > 0)
+                        if (top > 0) {
                             top *= phaseY;
-                        else
+                        }
+                        else {
                             bottom *= phaseY;
+                        }
 
                         addBar(left, top, right, bottom);
                     }
-                }   
-                
-            } else { // non inverted axis
-                
-                if(!mContainsStacks || vals == null) {
-                    
+                }
+
+            }
+            else { // non inverted axis
+
+                if (!mContainsStacks || vals == null) {
+
                     float left = x - barWidth + barSpaceHalf;
                     float right = x + barWidth - barSpaceHalf;
                     float top = y >= 0 ? y : 0;
                     float bottom = y <= 0 ? y : 0;
-                    
+
                     // multiply the height of the rect with the phase
-                    if (top > 0)
+                    if (top > 0) {
                         top *= phaseY;
-                    else
+                    }
+                    else {
                         bottom *= phaseY;
+                    }
 
                     addBar(left, top, right, bottom);
-                    
-                } else {
-                    
+
+                }
+                else {
+
                     float all = e.getVal();
 
                     // fill the stack
@@ -136,15 +145,17 @@ public class BarBuffer extends AbstractBuffer<BarEntry> {
                         float bottom = y <= 0 ? y : 0;
 
                         // multiply the height of the rect with the phase
-                        if (top > 0)
+                        if (top > 0) {
                             top *= phaseY;
-                        else
+                        }
+                        else {
                             bottom *= phaseY;
+                        }
 
                         addBar(left, top, right, bottom);
                     }
-                }   
-            }          
+                }
+            }
         }
 
         reset();

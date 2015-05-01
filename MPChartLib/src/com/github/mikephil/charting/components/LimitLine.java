@@ -4,55 +4,75 @@ package com.github.mikephil.charting.components;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.graphics.Paint;
-
 import com.github.mikephil.charting.utils.Utils;
 
 /**
  * The limit line is an additional feature for all Line-, Bar- and
  * ScatterCharts. It allows the displaying of an additional line in the chart
  * that marks a certain maximum / limit on the specified axis (x- or y-axis).
- * 
+ *
  * @author Philipp Jahoda
  */
 public class LimitLine {
 
-    /** limit / maximum (the y-value or xIndex) */
+    /**
+     * limit / maximum (the y-value or xIndex)
+     */
     private float mLimit = 0f;
 
-    /** the width of the limit line */
+    /**
+     * the width of the limit line
+     */
     private float mLineWidth = 2f;
 
-    /** the color of the limit line */
+    /**
+     * the color of the limit line
+     */
     private int mLineColor = Color.rgb(237, 91, 91);
 
-    /** the color of the value-text */
+    /**
+     * the color of the value-text
+     */
     private int mValueTextColor = Color.BLACK;
 
-    /** the size of the label text */
+    /**
+     * the size of the label text
+     */
     private float mTextSize = 13f;
 
-    /** the style of the label text */
+    /**
+     * the style of the label text
+     */
     private Paint.Style mTextStyle = Paint.Style.FILL_AND_STROKE;
 
-    /** label string that is drawn next to the limit line */
+    /**
+     * label string that is drawn next to the limit line
+     */
     private String mLabel = "";
 
-    /** the path effect of this LimitLine that makes dashed lines possible */
+    /**
+     * the path effect of this LimitLine that makes dashed lines possible
+     */
     private DashPathEffect mDashPathEffect = null;
 
-    /** indicates the position of the LimitLine label */
+    /**
+     * indicates the position of the LimitLine label
+     */
     private LimitLabelPosition mLabelPosition = LimitLabelPosition.POS_RIGHT;
 
-    /** enum that indicates the position of the LimitLine label */
+    /**
+     * enum that indicates the position of the LimitLine label
+     */
     public enum LimitLabelPosition {
         POS_LEFT, POS_RIGHT
     }
 
     /**
      * Constructor with limit.
-     * 
-     * @param limit - the position (the value) on the y-axis (y-value) or x-axis
-     *            (xIndex) where this line should appear
+     *
+     * @param limit
+     *         - the position (the value) on the y-axis (y-value) or x-axis
+     *         (xIndex) where this line should appear
      */
     public LimitLine(float limit) {
         mLimit = limit;
@@ -60,10 +80,12 @@ public class LimitLine {
 
     /**
      * Constructor with limit and label.
-     * 
-     * @param limit - the position (the value) on the y-axis (y-value) or x-axis
-     *            (xIndex) where this line should appear
-     * @param label - provide "" if no label is required
+     *
+     * @param limit
+     *         - the position (the value) on the y-axis (y-value) or x-axis
+     *         (xIndex) where this line should appear
+     * @param label
+     *         - provide "" if no label is required
      */
     public LimitLine(float limit, String label) {
         mLimit = limit;
@@ -72,7 +94,7 @@ public class LimitLine {
 
     /**
      * Returns the limit that is set for this line.
-     * 
+     *
      * @return
      */
     public float getLimit() {
@@ -82,21 +104,23 @@ public class LimitLine {
     /**
      * set the line width of the chart (min = 0.2f, max = 12f); default 2f NOTE:
      * thinner line == better performance, thicker line == worse performance
-     * 
+     *
      * @param width
      */
     public void setLineWidth(float width) {
 
-        if (width < 0.2f)
+        if (width < 0.2f) {
             width = 0.2f;
-        if (width > 12.0f)
+        }
+        if (width > 12.0f) {
             width = 12.0f;
+        }
         mLineWidth = Utils.convertDpToPixel(width);
     }
 
     /**
      * returns the width of limit line
-     * 
+     *
      * @return
      */
     public float getLineWidth() {
@@ -106,7 +130,7 @@ public class LimitLine {
     /**
      * Sets the linecolor for this LimitLine. Make sure to use
      * getResources().getColor(...)
-     * 
+     *
      * @param color
      */
     public void setLineColor(int color) {
@@ -115,7 +139,7 @@ public class LimitLine {
 
     /**
      * Returns the color that is used for this LimitLine
-     * 
+     *
      * @return
      */
     public int getLineColor() {
@@ -124,10 +148,13 @@ public class LimitLine {
 
     /**
      * Enables the line to be drawn in dashed mode, e.g. like this "- - - - - -"
-     * 
-     * @param lineLength the length of the line pieces
-     * @param spaceLength the length of space inbetween the pieces
-     * @param phase offset, in degrees (normally, use 0)
+     *
+     * @param lineLength
+     *         the length of the line pieces
+     * @param spaceLength
+     *         the length of space inbetween the pieces
+     * @param phase
+     *         offset, in degrees (normally, use 0)
      */
     public void enableDashedLine(float lineLength, float spaceLength, float phase) {
         mDashPathEffect = new DashPathEffect(new float[] {
@@ -145,7 +172,7 @@ public class LimitLine {
     /**
      * Returns true if the dashed-line effect is enabled, false if not. Default:
      * disabled
-     * 
+     *
      * @return
      */
     public boolean isDashedLineEnabled() {
@@ -154,7 +181,7 @@ public class LimitLine {
 
     /**
      * returns the DashPathEffect that is set for this LimitLine
-     * 
+     *
      * @return
      */
     public DashPathEffect getDashPathEffect() {
@@ -163,7 +190,7 @@ public class LimitLine {
 
     /**
      * Sets the color of the value-text that is drawn next to the LimitLine.
-     * 
+     *
      * @param color
      */
     public void setTextColor(int color) {
@@ -172,7 +199,7 @@ public class LimitLine {
 
     /**
      * Returns the color of the value-text that is drawn next to the LimitLine.
-     * 
+     *
      * @return
      */
     public int getTextColor() {
@@ -201,7 +228,7 @@ public class LimitLine {
     /**
      * Sets the position of the LimitLine value label (either on the right or on
      * the left edge of the chart). Not supported for RadarChart.
-     * 
+     *
      * @param pos
      */
     public void setLabelPosition(LimitLabelPosition pos) {
@@ -210,7 +237,7 @@ public class LimitLine {
 
     /**
      * Returns the position of the LimitLine label (value).
-     * 
+     *
      * @return
      */
     public LimitLabelPosition getLabelPosition() {
@@ -220,7 +247,7 @@ public class LimitLine {
     /**
      * Sets the label that is drawn next to the limit line. Provide "" if no
      * label is required.
-     * 
+     *
      * @param label
      */
     public void setLabel(String label) {
@@ -229,7 +256,7 @@ public class LimitLine {
 
     /**
      * Returns the label that is drawn next to the limit line.
-     * 
+     *
      * @return
      */
     public String getLabel() {
@@ -238,7 +265,7 @@ public class LimitLine {
 
     /**
      * Sets the size of the label-text.
-     * 
+     *
      * @param size
      */
     public void setTextSize(float size) {
@@ -247,7 +274,7 @@ public class LimitLine {
 
     /**
      * Returns the size of the label text.
-     * 
+     *
      * @return
      */
     public float getTextSize() {

@@ -9,7 +9,7 @@ import java.text.DecimalFormat;
  * 2000000 = 2m; 7800000 = 7.8m; 92150000 = 92m; 123200000 = 123m; 9999999 =
  * 10m; 1000000000 = 1b; Special thanks to Roman Gromov
  * (https://github.com/romangromov) for this piece of code.
- * 
+ *
  * @author Philipp Jahoda
  */
 public class LargeValueFormatter implements ValueFormatter {

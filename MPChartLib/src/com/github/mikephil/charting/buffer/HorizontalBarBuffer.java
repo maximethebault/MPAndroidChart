@@ -27,12 +27,12 @@ public class HorizontalBarBuffer extends BarBuffer {
 
             // calculate the x-position, depending on datasetcount
             float x = e.getXIndex() + i * dataSetOffset + mDataSetIndex
-                    + mGroupSpace * i + groupSpaceHalf;
+                      + mGroupSpace * i + groupSpaceHalf;
             float y = e.getVal();
             float[] vals = e.getVals();
 
-            if(mInverted) { // inverted axis
-                
+            if (mInverted) { // inverted axis
+
                 if (!mContainsStacks || vals == null) {
 
                     float bottom = x - barWidth + barSpaceHalf;
@@ -41,14 +41,17 @@ public class HorizontalBarBuffer extends BarBuffer {
                     float right = y <= 0 ? y : 0;
 
                     // multiply the height of the rect with the phase
-                    if (right > 0)
+                    if (right > 0) {
                         right *= phaseY;
-                    else
+                    }
+                    else {
                         left *= phaseY;
+                    }
 
                     addBar(left, top, right, bottom);
 
-                } else {
+                }
+                else {
 
                     float all = e.getVal();
 
@@ -64,17 +67,20 @@ public class HorizontalBarBuffer extends BarBuffer {
                         float right = y <= 0 ? y : 0;
 
                         // multiply the height of the rect with the phase
-                        if (right > 0)
+                        if (right > 0) {
                             right *= phaseY;
-                        else
+                        }
+                        else {
                             left *= phaseY;
+                        }
 
                         addBar(left, top, right, bottom);
                     }
                 }
-                
-            } else { // not inverted
-             
+
+            }
+            else { // not inverted
+
                 if (!mContainsStacks || vals == null) {
 
                     float bottom = x - barWidth + barSpaceHalf;
@@ -83,14 +89,17 @@ public class HorizontalBarBuffer extends BarBuffer {
                     float left = y <= 0 ? y : 0;
 
                     // multiply the height of the rect with the phase
-                    if (right > 0)
+                    if (right > 0) {
                         right *= phaseY;
-                    else
+                    }
+                    else {
                         left *= phaseY;
+                    }
 
                     addBar(left, top, right, bottom);
 
-                } else {
+                }
+                else {
 
                     float all = e.getVal();
 
@@ -106,10 +115,12 @@ public class HorizontalBarBuffer extends BarBuffer {
                         float left = y <= 0 ? y : 0;
 
                         // multiply the height of the rect with the phase
-                        if (right > 0)
+                        if (right > 0) {
                             right *= phaseY;
-                        else
+                        }
+                        else {
                             left *= phaseY;
+                        }
 
                         addBar(left, top, right, bottom);
                     }

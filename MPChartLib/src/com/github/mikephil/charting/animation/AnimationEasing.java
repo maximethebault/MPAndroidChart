@@ -47,9 +47,12 @@ public class AnimationEasing {
 
         /**
          * Called each time the animation state is updated.
-         * 
-         * @param elapsed - the time that has passed so far
-         * @param duration - the total animation duration
+         *
+         * @param elapsed
+         *         - the time that has passed so far
+         * @param duration
+         *         - the total animation duration
+         *
          * @return
          */
         public float ease(long elapsed, long duration);
@@ -57,8 +60,9 @@ public class AnimationEasing {
 
     /**
      * Returns the correct easing function depending on the EasingOption.
-     * 
+     *
      * @param easing
+     *
      * @return
      */
     public static EasingFunction getEasingFunctionFromOption(EasingOption easing) {
@@ -163,8 +167,7 @@ public class AnimationEasing {
             @Override
             public float ease(long elapsed, long duration) {
                 float position = elapsed / (duration / 2.f);
-                if (position < 1.f)
-                {
+                if (position < 1.f) {
                     return 0.5f * position * position;
                 }
                 return -0.5f * ((--position) * (position - 2.f) - 1.f);
@@ -192,8 +195,7 @@ public class AnimationEasing {
             @Override
             public float ease(long elapsed, long duration) {
                 float position = elapsed / (duration / 2.f);
-                if (position < 1.f)
-                {
+                if (position < 1.f) {
                     return 0.5f * position * position * position;
                 }
                 position -= 2.f;
@@ -222,8 +224,7 @@ public class AnimationEasing {
             @Override
             public float ease(long elapsed, long duration) {
                 float position = elapsed / (duration / 2.f);
-                if (position < 1.f)
-                {
+                if (position < 1.f) {
                     return 0.5f * position * position * position * position;
                 }
                 position -= 2.f;
@@ -252,8 +253,7 @@ public class AnimationEasing {
             @Override
             public float ease(long elapsed, long duration) {
                 float position = elapsed / (duration / 2.f);
-                if (position < 1.f)
-                {
+                if (position < 1.f) {
                     return 0.5f * position * position * position * position * position;
                 }
                 return 0.5f * ((position -= 2.f) * position * position * position * position + 2.f);
@@ -288,7 +288,7 @@ public class AnimationEasing {
             @Override
             public float ease(long elapsed, long duration) {
                 return (elapsed == 0) ? 0.f : (float) Math.pow(2.f, 10.f * (elapsed
-                        / (float) duration - 1.f));
+                                                                            / (float) duration - 1.f));
             }
         };
 
@@ -296,25 +296,22 @@ public class AnimationEasing {
             @Override
             public float ease(long elapsed, long duration) {
                 return (elapsed == duration) ? 1.f : (-(float) Math.pow(2.f, -10.f * elapsed
-                        / (float) duration) + 1.f);
+                                                                             / (float) duration) + 1.f);
             }
         };
 
         public static final EasingFunction EaseInOutExpo = new EasingFunction() {
             @Override
             public float ease(long elapsed, long duration) {
-                if (elapsed == 0)
-                {
+                if (elapsed == 0) {
                     return 0.f;
                 }
-                if (elapsed == duration)
-                {
+                if (elapsed == duration) {
                     return 1.f;
                 }
 
                 float position = elapsed / (duration / 2.f);
-                if (position < 1.f)
-                {
+                if (position < 1.f) {
                     return 0.5f * (float) Math.pow(2.f, 10.f * (position - 1.f));
                 }
                 return 0.5f * (-(float) Math.pow(2.f, -10.f * --position) + 2.f);
@@ -342,8 +339,7 @@ public class AnimationEasing {
             @Override
             public float ease(long elapsed, long duration) {
                 float position = elapsed / (duration / 2.f);
-                if (position < 1.f)
-                {
+                if (position < 1.f) {
                     return -0.5f * ((float) Math.sqrt(1.f - position * position) - 1.f);
                 }
                 return 0.5f * ((float) Math.sqrt(1.f - (position -= 2.f) * position) + 1.f);
@@ -353,14 +349,12 @@ public class AnimationEasing {
         public static final EasingFunction EaseInElastic = new EasingFunction() {
             @Override
             public float ease(long elapsed, long duration) {
-                if (elapsed == 0)
-                {
+                if (elapsed == 0) {
                     return 0.f;
                 }
 
                 float position = elapsed / (float) duration;
-                if (position == 1)
-                {
+                if (position == 1) {
                     return 1.f;
                 }
 
@@ -374,49 +368,44 @@ public class AnimationEasing {
         public static final EasingFunction EaseOutElastic = new EasingFunction() {
             @Override
             public float ease(long elapsed, long duration) {
-                if (elapsed == 0)
-                {
+                if (elapsed == 0) {
                     return 0.f;
                 }
 
                 float position = elapsed / (float) duration;
-                if (position == 1)
-                {
+                if (position == 1) {
                     return 1.f;
                 }
 
                 float p = duration * .3f;
                 float s = p / (2 * (float) Math.PI) * (float) Math.asin(1.f);
                 return (float) Math.pow(2, -10 * position)
-                        * (float) Math.sin((position * duration - s) * (2.f * Math.PI) / p) + 1.f;
+                       * (float) Math.sin((position * duration - s) * (2.f * Math.PI) / p) + 1.f;
             }
         };
 
         public static final EasingFunction EaseInOutElastic = new EasingFunction() {
             @Override
             public float ease(long elapsed, long duration) {
-                if (elapsed == 0)
-                {
+                if (elapsed == 0) {
                     return 0.f;
                 }
 
                 float position = elapsed / (duration / 2.f);
-                if (position == 2)
-                {
+                if (position == 2) {
                     return 1.f;
                 }
 
                 float p = duration * (.3f * 1.5f);
                 float s = p / (2.f * (float) Math.PI) * (float) Math.asin(1.f);
-                if (position < 1.f)
-                {
+                if (position < 1.f) {
                     return -.5f
-                            * ((float) Math.pow(2.f, 10.f * (position -= 1.f)) * (float) Math
-                                    .sin((position * duration - s) * (2.f * Math.PI) / p));
+                           * ((float) Math.pow(2.f, 10.f * (position -= 1.f)) * (float) Math
+                            .sin((position * duration - s) * (2.f * Math.PI) / p));
                 }
                 return (float) Math.pow(2.f, -10.f * (position -= 1.f))
-                        * (float) Math.sin((position * duration - s) * (2.f * Math.PI) / p) * .5f
-                        + 1.f;
+                       * (float) Math.sin((position * duration - s) * (2.f * Math.PI) / p) * .5f
+                       + 1.f;
             }
         };
 
@@ -444,12 +433,11 @@ public class AnimationEasing {
             public float ease(long elapsed, long duration) {
                 float s = 1.70158f;
                 float position = elapsed / (duration / 2.f);
-                if (position < 1.f)
-                {
+                if (position < 1.f) {
                     return 0.5f * (position * position * (((s *= (1.525f)) + 1.f) * position - s));
                 }
                 return 0.5f * ((position -= 2.f) * position
-                        * (((s *= (1.525f)) + 1.f) * position + s) + 2.f);
+                               * (((s *= (1.525f)) + 1.f) * position + s) + 2.f);
             }
         };
 
@@ -464,20 +452,16 @@ public class AnimationEasing {
             @Override
             public float ease(long elapsed, long duration) {
                 float position = elapsed / (float) duration;
-                if (position < (1.f / 2.75f))
-                {
+                if (position < (1.f / 2.75f)) {
                     return (7.5625f * position * position);
                 }
-                else if (position < (2.f / 2.75f))
-                {
+                else if (position < (2.f / 2.75f)) {
                     return (7.5625f * (position -= (1.5f / 2.75f)) * position + .75f);
                 }
-                else if (position < (2.5f / 2.75f))
-                {
+                else if (position < (2.5f / 2.75f)) {
                     return (7.5625f * (position -= (2.25f / 2.75f)) * position + .9375f);
                 }
-                else
-                {
+                else {
                     return (7.5625f * (position -= (2.625f / 2.75f)) * position + .984375f);
                 }
             }
@@ -486,8 +470,7 @@ public class AnimationEasing {
         public static final EasingFunction EaseInOutBounce = new EasingFunction() {
             @Override
             public float ease(long elapsed, long duration) {
-                if (elapsed < duration / 2.f)
-                {
+                if (elapsed < duration / 2.f) {
                     return EaseInBounce.ease(elapsed * 2, duration) * .5f;
                 }
                 return EaseOutBounce.ease(elapsed * 2 - duration, duration) * .5f + .5f;

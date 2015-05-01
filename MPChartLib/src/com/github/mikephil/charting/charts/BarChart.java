@@ -5,12 +5,7 @@ import android.content.Context;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.Log;
-
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.DataSet;
-import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.*;
 import com.github.mikephil.charting.interfaces.BarDataProvider;
 import com.github.mikephil.charting.renderer.BarChartRenderer;
 import com.github.mikephil.charting.renderer.XAxisRendererBarChart;
@@ -18,12 +13,14 @@ import com.github.mikephil.charting.utils.Highlight;
 
 /**
  * Chart that draws bars.
- * 
+ *
  * @author Philipp Jahoda
  */
 public class BarChart extends BarLineChartBase<BarData> implements BarDataProvider {
 
-    /** flag that enables or disables the highlighting arrow */
+    /**
+     * flag that enables or disables the highlighting arrow
+     */
     private boolean mDrawHighlightArrow = false;
 
     /**
@@ -62,7 +59,7 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
 
         mRenderer = new BarChartRenderer(this, mAnimator, mViewPortHandler);
         mXAxisRenderer = new XAxisRendererBarChart(mViewPortHandler, mXAxis, mLeftAxisTransformer,
-                this);
+                                                   this);
 
         mXChartMin = -0.5f;
     }
@@ -83,8 +80,9 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
 
             DataSet<? extends Entry> set = mData.getDataSetByIndex(i);
 
-            if (maxEntry < set.getEntryCount())
+            if (maxEntry < set.getEntryCount()) {
                 maxEntry = set.getEntryCount();
+            }
         }
 
         float groupSpace = mData.getGroupSpace();
@@ -95,9 +93,10 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
     /**
      * Returns the Highlight object (contains x-index and DataSet index) of the
      * selected value at the given touch point inside the BarChart.
-     * 
+     *
      * @param x
      * @param y
+     *
      * @return
      */
     @Override
@@ -115,8 +114,9 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
 
         mLeftAxisTransformer.pixelsToValue(pts);
 
-        if (pts[0] < mXChartMin || pts[0] > mXChartMax)
+        if (pts[0] < mXChartMin || pts[0] > mXChartMax) {
             return null;
+        }
 
         return getHighlight(pts[0], pts[1]);
     }
@@ -124,8 +124,9 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
     /**
      * Returns the correct Highlight object (including xIndex and dataSet-index)
      * for the specified touch position.
-     * 
+     *
      * @param xPosition
+     *
      * @return
      */
     protected Highlight getHighlight(double xPosition, double yPosition) {
@@ -143,12 +144,14 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
             // check bounds
             if (xIndex < 0) {
                 xIndex = 0;
-            } else if (xIndex >= valCount) {
+            }
+            else if (xIndex >= valCount) {
                 xIndex = valCount - 1;
             }
 
             // if this bardata is grouped into more datasets
-        } else {
+        }
+        else {
 
             // calculate how often the group-space appears
             int steps = (int) ((float) xPosition / ((float) setCount + mData.getGroupSpace()));
@@ -157,46 +160,54 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
 
             float baseNoSpace = (float) xPosition - groupSpaceSum;
 
-            if (mLogEnabled)
+            if (mLogEnabled) {
                 Log.i(LOG_TAG, "base: " + xPosition + ", steps: " + steps + ", groupSpaceSum: "
-                        + groupSpaceSum
-                        + ", baseNoSpace: " + baseNoSpace);
+                               + groupSpaceSum
+                               + ", baseNoSpace: " + baseNoSpace);
+            }
 
             dataSetIndex = (int) baseNoSpace % setCount;
             xIndex = (int) baseNoSpace / setCount;
 
-            if (mLogEnabled)
+            if (mLogEnabled) {
                 Log.i(LOG_TAG, "xIndex: " + xIndex + ", dataSet: " + dataSetIndex);
+            }
 
             // check bounds
             if (xIndex < 0) {
                 xIndex = 0;
                 dataSetIndex = 0;
-            } else if (xIndex >= valCount) {
+            }
+            else if (xIndex >= valCount) {
                 xIndex = valCount - 1;
                 dataSetIndex = setCount - 1;
             }
 
             // check bounds
-            if (dataSetIndex < 0)
+            if (dataSetIndex < 0) {
                 dataSetIndex = 0;
-            else if (dataSetIndex >= setCount)
+            }
+            else if (dataSetIndex >= setCount) {
                 dataSetIndex = setCount - 1;
+            }
         }
-        
-        if (!mData.getDataSetByIndex(dataSetIndex).isStacked())
+
+        if (!mData.getDataSetByIndex(dataSetIndex).isStacked()) {
             return new Highlight(xIndex, dataSetIndex);
-        else
+        }
+        else {
             return getStackedHighlight(xIndex, dataSetIndex, yPosition);
+        }
     }
 
     /**
      * This method creates the Highlight object that also indicates which value
      * of a stacked BarEntry has been selected.
-     * 
+     *
      * @param xIndex
      * @param dataSet
      * @param yValue
+     *
      * @return
      */
     protected Highlight getStackedHighlight(int xIndex, int dataSet, double yValue) {
@@ -207,24 +218,28 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
             int stackIndex = entry.getClosestIndexAbove((float) yValue);
             Highlight h = new Highlight(xIndex, dataSet, stackIndex);
             return h;
-        } else
+        }
+        else {
             return null;
+        }
     }
 
     /**
      * Returns the bounding box of the specified Entry in the specified DataSet.
      * Returns null if the Entry could not be found in the charts data.
-     * 
+     *
      * @param e
      * @param dataSetIndex
+     *
      * @return
      */
     public RectF getBarBounds(BarEntry e) {
 
         BarDataSet set = mData.getDataSetForEntry(e);
 
-        if (set == null)
+        if (set == null) {
             return null;
+        }
 
         float barspace = set.getBarSpace();
         float y = e.getVal();
@@ -247,7 +262,7 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
 
     /**
      * set this to true to draw the highlightning arrow
-     * 
+     *
      * @param enabled
      */
     public void setDrawHighlightArrow(boolean enabled) {
@@ -256,7 +271,7 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
 
     /**
      * returns true if drawing the highlighting arrow is enabled, false if not
-     * 
+     *
      * @return
      */
     public boolean isDrawHighlightArrowEnabled() {
@@ -266,7 +281,7 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
     /**
      * If set to true, all values are drawn above their bars, instead of below
      * their top.
-     * 
+     *
      * @param enabled
      */
     public void setDrawValueAboveBar(boolean enabled) {
@@ -275,7 +290,7 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
 
     /**
      * returns true if drawing values above bars is enabled, false if not
-     * 
+     *
      * @return
      */
     public boolean isDrawValueAboveBarEnabled() {
@@ -285,7 +300,7 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
     /**
      * if set to true, all values of a stack are drawn individually, and not
      * just their sum
-     * 
+     *
      * @param enabled
      */
     public void setDrawValuesForWholeStack(boolean enabled) {
@@ -294,7 +309,7 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
 
     /**
      * returns true if all values of a stack are drawn, and not just their sum
-     * 
+     *
      * @return
      */
     public boolean isDrawValuesForWholeStackEnabled() {
@@ -304,7 +319,7 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
     /**
      * If set to true, a grey area is drawn behind each bar that indicates the
      * maximum value. Enabling his will reduce performance by about 50%.
-     * 
+     *
      * @param enabled
      */
     public void setDrawBarShadow(boolean enabled) {
@@ -314,7 +329,7 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
     /**
      * returns true if drawing shadows (maxvalue) for each bar is enabled, false
      * if not
-     * 
+     *
      * @return
      */
     public boolean isDrawBarShadowEnabled() {

@@ -1,12 +1,7 @@
 
 package com.github.mikephil.charting.renderer;
 
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Path;
-import android.graphics.PointF;
-
+import android.graphics.*;
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.charts.RadarChart;
 import com.github.mikephil.charting.data.Entry;
@@ -22,11 +17,13 @@ public class RadarChartRenderer extends DataRenderer {
 
     protected RadarChart mChart;
 
-    /** paint for drawing the web */
+    /**
+     * paint for drawing the web
+     */
     protected Paint mWebPaint;
 
     public RadarChartRenderer(RadarChart chart, ChartAnimator animator,
-            ViewPortHandler viewPortHandler) {
+                              ViewPortHandler viewPortHandler) {
         super(animator, viewPortHandler);
         mChart = chart;
 
@@ -46,9 +43,9 @@ public class RadarChartRenderer extends DataRenderer {
     @Override
     public void initBuffers() {
         // TODO Auto-generated method stub
-        
+
     }
-    
+
     @Override
     public void drawData(Canvas c) {
 
@@ -56,8 +53,9 @@ public class RadarChartRenderer extends DataRenderer {
 
         for (RadarDataSet set : radarData.getDataSets()) {
 
-            if (set.isVisible())
+            if (set.isVisible()) {
                 drawDataSet(c, set);
+            }
         }
     }
 
@@ -82,12 +80,14 @@ public class RadarChartRenderer extends DataRenderer {
             Entry e = entries.get(j);
 
             PointF p = Utils.getPosition(center, (e.getVal() - mChart.getYChartMin()) * factor,
-                    sliceangle * j + mChart.getRotationAngle());
+                                         sliceangle * j + mChart.getRotationAngle());
 
-            if (j == 0)
+            if (j == 0) {
                 surface.moveTo(p.x, p.y);
-            else
+            }
+            else {
                 surface.lineTo(p.x, p.y);
+            }
         }
 
         surface.close();
@@ -104,8 +104,9 @@ public class RadarChartRenderer extends DataRenderer {
         mRenderPaint.setStyle(Paint.Style.STROKE);
 
         // draw the line (only if filled is disabled or alpha is below 255)
-        if (!dataSet.isDrawFilledEnabled() || dataSet.getFillAlpha() < 255)
+        if (!dataSet.isDrawFilledEnabled() || dataSet.getFillAlpha() < 255) {
             c.drawPath(surface, mRenderPaint);
+        }
     }
 
     @Override
@@ -125,8 +126,9 @@ public class RadarChartRenderer extends DataRenderer {
 
             RadarDataSet dataSet = mChart.getData().getDataSetByIndex(i);
 
-            if (!dataSet.isDrawValuesEnabled())
+            if (!dataSet.isDrawValuesEnabled()) {
                 continue;
+            }
 
             // apply the text-styling defined by the DataSet
             applyValueTextStyle(dataSet);
@@ -138,10 +140,10 @@ public class RadarChartRenderer extends DataRenderer {
                 Entry e = entries.get(j);
 
                 PointF p = Utils.getPosition(center, (e.getVal() - mChart.getYChartMin()) * factor,
-                        sliceangle * j + mChart.getRotationAngle());
+                                             sliceangle * j + mChart.getRotationAngle());
 
                 c.drawText(dataSet.getValueFormatter().getFormattedValue(e.getVal()),
-                        p.x, p.y - yoffset, mValuePaint);
+                           p.x, p.y - yoffset, mValuePaint);
             }
         }
     }
@@ -170,7 +172,7 @@ public class RadarChartRenderer extends DataRenderer {
         for (int i = 0; i < mChart.getData().getXValCount(); i++) {
 
             PointF p = Utils.getPosition(center, mChart.getYRange() * factor, sliceangle * i
-                    + rotationangle);
+                                                                              + rotationangle);
 
             c.drawLine(center.x, center.y, p.x, p.y, mWebPaint);
         }
@@ -207,11 +209,12 @@ public class RadarChartRenderer extends DataRenderer {
         for (int i = 0; i < indices.length; i++) {
 
             RadarDataSet set = mChart.getData()
-                    .getDataSetByIndex(indices[i]
-                            .getDataSetIndex());
+                                     .getDataSetByIndex(indices[i]
+                                                                .getDataSetIndex());
 
-            if (set == null)
+            if (set == null) {
                 continue;
+            }
 
             mHighlightPaint.setColor(set.getHighLightColor());
 
@@ -223,7 +226,7 @@ public class RadarChartRenderer extends DataRenderer {
             float y = (e.getVal() - mChart.getYChartMin());
 
             PointF p = Utils.getPosition(center, y * factor,
-                    sliceangle * j + mChart.getRotationAngle());
+                                         sliceangle * j + mChart.getRotationAngle());
 
             float[] pts = new float[] {
                     p.x, 0, p.x, mViewPortHandler.getChartHeight(), 0, p.y,

@@ -2,7 +2,6 @@
 package com.github.mikephil.charting.jobs;
 
 import android.view.View;
-
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
@@ -10,7 +9,7 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
  * Runnable that is used for viewport modifications since they cannot be
  * executed at any time. This can be used to delay the execution of viewport
  * modifications until the onSizeChanged(...) method of the chartview is called.
- * 
+ *
  * @author Philipp Jahoda
  */
 public class MoveViewJob implements Runnable {
@@ -22,7 +21,7 @@ public class MoveViewJob implements Runnable {
     protected View view;
 
     public MoveViewJob(ViewPortHandler viewPortHandler, float xIndex, float yValue,
-            Transformer trans, View v) {
+                       Transformer trans, View v) {
 
         this.mViewPortHandler = viewPortHandler;
         this.xIndex = xIndex;

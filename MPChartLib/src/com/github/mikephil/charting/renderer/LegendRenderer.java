@@ -5,13 +5,8 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Typeface;
-
 import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.ChartData;
-import com.github.mikephil.charting.data.DataSet;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.*;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
@@ -20,13 +15,19 @@ import java.util.List;
 
 public class LegendRenderer extends Renderer {
 
-    /** paint for the legend labels */
+    /**
+     * paint for the legend labels
+     */
     protected Paint mLegendLabelPaint;
 
-    /** paint used for the legend forms */
+    /**
+     * paint used for the legend forms
+     */
     protected Paint mLegendFormPaint;
 
-    /** the legend object this renderer renders */
+    /**
+     * the legend object this renderer renders
+     */
     protected Legend mLegend;
 
     public LegendRenderer(ViewPortHandler viewPortHandler, Legend legend) {
@@ -45,7 +46,7 @@ public class LegendRenderer extends Renderer {
 
     /**
      * Returns the Paint object used for drawing the Legend labels.
-     * 
+     *
      * @return
      */
     public Paint getLabelPaint() {
@@ -54,7 +55,7 @@ public class LegendRenderer extends Renderer {
 
     /**
      * Returns the Paint object used for drawing the Legend forms.
-     * 
+     *
      * @return
      */
     public Paint getFormPaint() {
@@ -63,7 +64,7 @@ public class LegendRenderer extends Renderer {
 
     /**
      * Prepares the legend and calculates all needed forms, labels and colors.
-     * 
+     *
      * @param data
      */
     public void computeLegend(ChartData<?> data) {
@@ -95,7 +96,8 @@ public class LegendRenderer extends Renderer {
                 colors.add(-2);
                 labels.add(bds.getLabel());
 
-            } else if (dataSet instanceof PieDataSet) {
+            }
+            else if (dataSet instanceof PieDataSet) {
 
                 List<String> xVals = data.getXVals();
                 PieDataSet pds = (PieDataSet) dataSet;
@@ -110,7 +112,8 @@ public class LegendRenderer extends Renderer {
                 colors.add(-2);
                 labels.add(pds.getLabel());
 
-            } else { // all others
+            }
+            else { // all others
 
                 for (int j = 0; j < clrs.size() && j < entryCount; j++) {
 
@@ -118,7 +121,8 @@ public class LegendRenderer extends Renderer {
                     if (j < clrs.size() - 1 && j < entryCount - 1) {
 
                         labels.add(null);
-                    } else { // add label to the last entry
+                    }
+                    else { // add label to the last entry
 
                         String label = data.getDataSetByIndex(i).getLabel();
                         labels.add(label);
@@ -134,8 +138,9 @@ public class LegendRenderer extends Renderer {
 
         Typeface tf = mLegend.getTypeface();
 
-        if (tf != null)
+        if (tf != null) {
             mLegendLabelPaint.setTypeface(tf);
+        }
 
         mLegendLabelPaint.setTextSize(mLegend.getTextSize());
         mLegendLabelPaint.setColor(mLegend.getTextColor());
@@ -146,13 +151,15 @@ public class LegendRenderer extends Renderer {
 
     public void renderLegend(Canvas c) {
 
-        if (!mLegend.isEnabled())
+        if (!mLegend.isEnabled()) {
             return;
+        }
 
         Typeface tf = mLegend.getTypeface();
 
-        if (tf != null)
+        if (tf != null) {
             mLegendLabelPaint.setTypeface(tf);
+        }
 
         mLegendLabelPaint.setTextSize(mLegend.getTextSize());
         mLegendLabelPaint.setColor(mLegend.getTextColor());
@@ -197,36 +204,42 @@ public class LegendRenderer extends Renderer {
                     boolean drawingForm = colors[i] != -2;
 
                     if (drawingForm) {
-                        if (direction == Legend.LegendDirection.RIGHT_TO_LEFT)
+                        if (direction == Legend.LegendDirection.RIGHT_TO_LEFT) {
                             posX -= formSize;
+                        }
 
                         drawForm(c, posX, posY - mLegend.mTextHeightMax / 2f, i, mLegend);
 
-                        if (direction == Legend.LegendDirection.LEFT_TO_RIGHT)
+                        if (direction == Legend.LegendDirection.LEFT_TO_RIGHT) {
                             posX += formSize;
+                        }
                     }
 
                     // grouped forms have null labels
                     if (labels[i] != null) {
 
                         // spacing between form and label
-                        if (drawingForm)
+                        if (drawingForm) {
                             posX += direction == Legend.LegendDirection.RIGHT_TO_LEFT ?
                                     -formToTextSpace :
                                     formToTextSpace;
+                        }
 
-                        if (direction == Legend.LegendDirection.RIGHT_TO_LEFT)
+                        if (direction == Legend.LegendDirection.RIGHT_TO_LEFT) {
                             posX -= Utils.calcTextWidth(mLegendLabelPaint, labels[i]);
+                        }
 
                         drawLabel(c, posX, posY, labels[i]);
 
-                        if (direction == Legend.LegendDirection.LEFT_TO_RIGHT)
+                        if (direction == Legend.LegendDirection.LEFT_TO_RIGHT) {
                             posX += Utils.calcTextWidth(mLegendLabelPaint, labels[i]);
+                        }
 
                         posX += direction == Legend.LegendDirection.RIGHT_TO_LEFT ?
                                 -xEntrySpace :
                                 xEntrySpace;
-                    } else {
+                    }
+                    else {
                         posX += direction == Legend.LegendDirection.RIGHT_TO_LEFT ? -stackSpace : stackSpace;
                     }
                 }
@@ -269,36 +282,42 @@ public class LegendRenderer extends Renderer {
                     boolean drawingForm = colors[i] != -2;
 
                     if (drawingForm) {
-                        if (direction == Legend.LegendDirection.RIGHT_TO_LEFT)
+                        if (direction == Legend.LegendDirection.RIGHT_TO_LEFT) {
                             posX -= formSize;
+                        }
 
                         drawForm(c, posX, posY - mLegend.mTextHeightMax / 2f, i, mLegend);
 
-                        if (direction == Legend.LegendDirection.LEFT_TO_RIGHT)
+                        if (direction == Legend.LegendDirection.LEFT_TO_RIGHT) {
                             posX += formSize;
+                        }
                     }
 
                     // grouped forms have null labels
                     if (labels[i] != null) {
 
                         // spacing between form and label
-                        if (drawingForm)
+                        if (drawingForm) {
                             posX += direction == Legend.LegendDirection.RIGHT_TO_LEFT ?
                                     -formToTextSpace :
                                     formToTextSpace;
+                        }
 
-                        if (direction == Legend.LegendDirection.RIGHT_TO_LEFT)
+                        if (direction == Legend.LegendDirection.RIGHT_TO_LEFT) {
                             posX -= Utils.calcTextWidth(mLegendLabelPaint, labels[i]);
+                        }
 
                         drawLabel(c, posX, posY, labels[i]);
 
-                        if (direction == Legend.LegendDirection.LEFT_TO_RIGHT)
+                        if (direction == Legend.LegendDirection.LEFT_TO_RIGHT) {
                             posX += Utils.calcTextWidth(mLegendLabelPaint, labels[i]);
+                        }
 
                         posX += direction == Legend.LegendDirection.RIGHT_TO_LEFT ?
                                 -xEntrySpace :
                                 xEntrySpace;
-                    } else {
+                    }
+                    else {
                         posX += direction == Legend.LegendDirection.RIGHT_TO_LEFT ? -stackSpace : stackSpace;
                     }
                 }
@@ -315,32 +334,39 @@ public class LegendRenderer extends Renderer {
                     float x = posX;
 
                     if (drawingForm) {
-                        if (direction == Legend.LegendDirection.LEFT_TO_RIGHT)
+                        if (direction == Legend.LegendDirection.LEFT_TO_RIGHT) {
                             x += stack;
-                        else
+                        }
+                        else {
                             x -= formSize - stack;
+                        }
 
                         drawForm(c, x, posY, i, mLegend);
 
-                        if (direction == Legend.LegendDirection.LEFT_TO_RIGHT)
+                        if (direction == Legend.LegendDirection.LEFT_TO_RIGHT) {
                             x += formSize;
+                        }
                     }
 
                     if (labels[i] != null) {
 
-                        if (drawingForm && !wasStacked)
+                        if (drawingForm && !wasStacked) {
                             x += direction == Legend.LegendDirection.LEFT_TO_RIGHT ? formToTextSpace : -formToTextSpace;
-                        else if (wasStacked)
+                        }
+                        else if (wasStacked) {
                             x = posX;
+                        }
 
-                        if (direction == Legend.LegendDirection.RIGHT_TO_LEFT)
+                        if (direction == Legend.LegendDirection.RIGHT_TO_LEFT) {
                             x -= Utils.calcTextWidth(mLegendLabelPaint, labels[i]);
+                        }
 
                         if (!wasStacked) {
                             drawLabel(c, x, posY + mLegend.mTextHeightMax / 2f, mLegend.getLabel(i));
 
                             posY += textDrop;
-                        } else {
+                        }
+                        else {
                             posY += mLegend.mTextHeightMax * 3f;
                             drawLabel(c, x, posY - mLegend.mTextHeightMax, mLegend.getLabel(i));
                         }
@@ -348,7 +374,8 @@ public class LegendRenderer extends Renderer {
                         // make a step down
                         posY += mLegend.getYEntrySpace();
                         stack = 0f;
-                    } else {
+                    }
+                    else {
                         stack += formSize + stackSpace;
                         wasStacked = true;
                     }
@@ -363,26 +390,31 @@ public class LegendRenderer extends Renderer {
             case LEFT_OF_CHART_INSIDE:
 
                 boolean isRightAligned = mLegend.getPosition() == Legend.LegendPosition.RIGHT_OF_CHART ||
-                    mLegend.getPosition() == Legend.LegendPosition.RIGHT_OF_CHART_CENTER ||
-                    mLegend.getPosition() == Legend.LegendPosition.RIGHT_OF_CHART_INSIDE;
+                                         mLegend.getPosition() == Legend.LegendPosition.RIGHT_OF_CHART_CENTER ||
+                                         mLegend.getPosition() == Legend.LegendPosition.RIGHT_OF_CHART_INSIDE;
 
                 if (isRightAligned) {
                     posX = mViewPortHandler.getChartWidth() - xoffset;
-                    if (direction == Legend.LegendDirection.LEFT_TO_RIGHT)
+                    if (direction == Legend.LegendDirection.LEFT_TO_RIGHT) {
                         posX -= mLegend.mTextWidthMax;
-                } else {
+                    }
+                }
+                else {
                     posX = xoffset;
-                    if (direction == Legend.LegendDirection.RIGHT_TO_LEFT)
+                    if (direction == Legend.LegendDirection.RIGHT_TO_LEFT) {
                         posX += mLegend.mTextWidthMax;
+                    }
                 }
 
                 if (mLegend.getPosition() == Legend.LegendPosition.RIGHT_OF_CHART ||
-                        mLegend.getPosition() == Legend.LegendPosition.LEFT_OF_CHART) {
+                    mLegend.getPosition() == Legend.LegendPosition.LEFT_OF_CHART) {
                     posY = mViewPortHandler.contentTop() + yoffset;
-                } else if (mLegend.getPosition() == Legend.LegendPosition.RIGHT_OF_CHART_CENTER ||
-                        mLegend.getPosition() == Legend.LegendPosition.LEFT_OF_CHART_CENTER) {
+                }
+                else if (mLegend.getPosition() == Legend.LegendPosition.RIGHT_OF_CHART_CENTER ||
+                         mLegend.getPosition() == Legend.LegendPosition.LEFT_OF_CHART_CENTER) {
                     posY = mViewPortHandler.getChartHeight() / 2f - mLegend.mNeededHeight / 2f;
-                } else /*if (mLegend.getPosition() == Legend.LegendPosition.RIGHT_OF_CHART_INSIDE ||
+                }
+                else /*if (mLegend.getPosition() == Legend.LegendPosition.RIGHT_OF_CHART_INSIDE ||
                         mLegend.getPosition() == Legend.LegendPosition.LEFT_OF_CHART_INSIDE)*/ {
                     posY = mViewPortHandler.contentTop() + yoffset;
                 }
@@ -393,32 +425,39 @@ public class LegendRenderer extends Renderer {
                     float x = posX;
 
                     if (drawingForm) {
-                        if (direction == Legend.LegendDirection.LEFT_TO_RIGHT)
+                        if (direction == Legend.LegendDirection.LEFT_TO_RIGHT) {
                             x += stack;
-                        else
+                        }
+                        else {
                             x -= formSize - stack;
+                        }
 
                         drawForm(c, x, posY, i, mLegend);
 
-                        if (direction == Legend.LegendDirection.LEFT_TO_RIGHT)
+                        if (direction == Legend.LegendDirection.LEFT_TO_RIGHT) {
                             x += formSize;
+                        }
                     }
 
                     if (labels[i] != null) {
 
-                        if (drawingForm && !wasStacked)
+                        if (drawingForm && !wasStacked) {
                             x += direction == Legend.LegendDirection.LEFT_TO_RIGHT ? formToTextSpace : -formToTextSpace;
-                        else if (wasStacked)
+                        }
+                        else if (wasStacked) {
                             x = posX;
+                        }
 
-                        if (direction == Legend.LegendDirection.RIGHT_TO_LEFT)
+                        if (direction == Legend.LegendDirection.RIGHT_TO_LEFT) {
                             x -= Utils.calcTextWidth(mLegendLabelPaint, labels[i]);
+                        }
 
                         if (!wasStacked) {
                             drawLabel(c, x, posY + mLegend.mTextHeightMax / 2f, mLegend.getLabel(i));
 
                             posY += textDrop;
-                        } else {
+                        }
+                        else {
                             posY += mLegend.mTextHeightMax * 3f;
                             drawLabel(c, x, posY - mLegend.mTextHeightMax, mLegend.getLabel(i));
                         }
@@ -426,7 +465,8 @@ public class LegendRenderer extends Renderer {
                         // make a step down
                         posY += mLegend.getYEntrySpace();
                         stack = 0f;
-                    } else {
+                    }
+                    else {
                         stack += formSize + stackSpace;
                         wasStacked = true;
                     }
@@ -438,16 +478,19 @@ public class LegendRenderer extends Renderer {
     /**
      * Draws the Legend-form at the given position with the color at the given
      * index.
-     * 
-     * @param c canvas to draw with
+     *
+     * @param c
+     *         canvas to draw with
      * @param x
      * @param y
-     * @param index the index of the color to use (in the colors array)
+     * @param index
+     *         the index of the color to use (in the colors array)
      */
     protected void drawForm(Canvas c, float x, float y, int index, Legend legend) {
 
-        if (legend.getColors()[index] == -2)
+        if (legend.getColors()[index] == -2) {
             return;
+        }
 
         mLegendFormPaint.setColor(legend.getColors()[index]);
 
@@ -469,11 +512,13 @@ public class LegendRenderer extends Renderer {
 
     /**
      * Draws the provided label at the given position.
-     * 
-     * @param c canvas to draw with
+     *
+     * @param c
+     *         canvas to draw with
      * @param x
      * @param y
-     * @param label the label to draw
+     * @param label
+     *         the label to draw
      */
     protected void drawLabel(Canvas c, float x, float y, String label) {
         c.drawText(label, x, y, mLegendLabelPaint);

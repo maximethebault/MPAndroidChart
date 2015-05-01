@@ -11,7 +11,6 @@ import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
-
 import com.github.mikephil.charting.components.Legend.LegendPosition;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.DataSet;
@@ -25,22 +24,30 @@ import java.util.List;
 
 /**
  * Baseclass of PieChart and RadarChart.
- * 
+ *
  * @author Philipp Jahoda
  */
 public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? extends Entry>>>
         extends Chart<T> {
 
-    /** holds the current rotation angle of the chart */
+    /**
+     * holds the current rotation angle of the chart
+     */
     protected float mRotationAngle = 270f;
-    
-    /** the angle where the dragging started */
+
+    /**
+     * the angle where the dragging started
+     */
     private float mStartAngle = 0f;
 
-    /** flag that indicates if rotation is enabled or not */
+    /**
+     * flag that indicates if rotation is enabled or not
+     */
     protected boolean mRotateEnabled = true;
 
-    /** the pie- and radarchart touchlistener */
+    /**
+     * the pie- and radarchart touchlistener
+     */
     protected OnTouchListener mListener;
 
     public PieRadarChartBase(Context context) {
@@ -70,16 +77,19 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         // use the pie- and radarchart listener own listener
-        if (mTouchEnabled && mListener != null)
+        if (mTouchEnabled && mListener != null) {
             return mListener.onTouch(this, event);
-        else
+        }
+        else {
             return super.onTouchEvent(event);
+        }
     }
 
     @Override
     public void notifyDataSetChanged() {
-        if (mDataNotSet)
+        if (mDataNotSet) {
             return;
+        }
 
         calcMinMax();
 
@@ -102,7 +112,8 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
 
                 legendRight = getFullLegendWidth() + spacing;
 
-            } else if (mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART) {
+            }
+            else if (mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART) {
 
                 // this is the space between the legend and the chart
                 float spacing = Utils.convertDpToPixel(8f);
@@ -117,7 +128,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
                 float distLegend = distanceToCenter(bottomRight.x, bottomRight.y);
 
                 PointF reference = getPosition(c, getRadius(),
-                        getAngleForPoint(bottomRight.x, bottomRight.y));
+                                               getAngleForPoint(bottomRight.x, bottomRight.y));
 
                 float distReference = distanceToCenter(reference.x, reference.y);
                 float min = Utils.convertDpToPixel(5f);
@@ -132,14 +143,16 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
                     legendRight = legendWidth;
                 }
 
-            } else if (mLegend.getPosition() == LegendPosition.LEFT_OF_CHART_CENTER) {
+            }
+            else if (mLegend.getPosition() == LegendPosition.LEFT_OF_CHART_CENTER) {
 
                 // this is the space between the legend and the chart
                 float spacing = Utils.convertDpToPixel(13f);
 
                 legendLeft = getFullLegendWidth() + spacing;
 
-            } else if (mLegend.getPosition() == LegendPosition.LEFT_OF_CHART) {
+            }
+            else if (mLegend.getPosition() == LegendPosition.LEFT_OF_CHART) {
 
                 // this is the space between the legend and the chart
                 float spacing = Utils.convertDpToPixel(8f);
@@ -154,7 +167,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
                 float distLegend = distanceToCenter(bottomLeft.x, bottomLeft.y);
 
                 PointF reference = getPosition(c, getRadius(),
-                        getAngleForPoint(bottomLeft.x, bottomLeft.y));
+                                               getAngleForPoint(bottomLeft.x, bottomLeft.y));
 
                 float distReference = distanceToCenter(reference.x, reference.y);
                 float min = Utils.convertDpToPixel(5f);
@@ -169,9 +182,10 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
                     legendLeft = legendWidth;
                 }
 
-            } else if (mLegend.getPosition() == LegendPosition.BELOW_CHART_LEFT
-                    || mLegend.getPosition() == LegendPosition.BELOW_CHART_RIGHT
-                    || mLegend.getPosition() == LegendPosition.BELOW_CHART_CENTER) {
+            }
+            else if (mLegend.getPosition() == LegendPosition.BELOW_CHART_LEFT
+                     || mLegend.getPosition() == LegendPosition.BELOW_CHART_RIGHT
+                     || mLegend.getPosition() == LegendPosition.BELOW_CHART_CENTER) {
 
                 legendBottom = getRequiredBottomOffset();
             }
@@ -190,15 +204,16 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
 
         mViewPortHandler.restrainViewPort(offsetLeft, offsetTop, offsetRight, offsetBottom);
 
-        if (mLogEnabled)
+        if (mLogEnabled) {
             Log.i(LOG_TAG, "offsetLeft: " + offsetLeft + ", offsetTop: " + offsetTop
-                    + ", offsetRight: " + offsetRight + ", offsetBottom: " + offsetBottom);
+                           + ", offsetRight: " + offsetRight + ", offsetBottom: " + offsetBottom);
+        }
     }
 
     /**
      * sets the starting angle of the rotation, this is only used by the touch
      * listener, x and y is the touch position
-     * 
+     *
      * @param x
      * @param y
      */
@@ -213,7 +228,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
     /**
      * updates the view rotation depending on the given touch position, also
      * takes the starting angle into consideration
-     * 
+     *
      * @param x
      * @param y
      */
@@ -232,9 +247,10 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
      * returns the angle relative to the chart center for the given point on the
      * chart in degrees. The angle is always between 0 and 360°, 0° is NORTH,
      * 90° is EAST, ...
-     * 
+     *
      * @param x
      * @param y
+     *
      * @return
      */
     public float getAngleForPoint(float x, float y) {
@@ -247,15 +263,17 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
 
         float angle = (float) Math.toDegrees(r);
 
-        if (x > c.x)
+        if (x > c.x) {
             angle = 360f - angle;
+        }
 
         // add 90° because chart starts EAST
         angle = angle + 90f;
 
         // neutralize overflow
-        if (angle > 360f)
+        if (angle > 360f) {
             angle = angle - 360f;
+        }
 
         return angle;
     }
@@ -263,26 +281,30 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
     /**
      * Calculates the position around a center point, depending on the distance
      * from the center, and the angle of the position around the center.
-     * 
+     *
      * @param center
      * @param dist
-     * @param angle in degrees, converted to radians internally
+     * @param angle
+     *         in degrees, converted to radians internally
+     *
      * @return
      */
     protected PointF getPosition(PointF center, float dist, float angle) {
 
         PointF p = new PointF((float) (center.x + dist * Math.cos(Math.toRadians(angle))),
-                (float) (center.y + dist * Math.sin(Math.toRadians(angle))));
+                              (float) (center.y + dist * Math.sin(Math.toRadians(angle))));
         return p;
     }
 
     /**
      * Returns the distance of a certain point on the chart to the center of the
      * chart.
-     * 
-     * @param c the center
+     *
+     * @param c
+     *         the center
      * @param x
      * @param y
+     *
      * @return
      */
     public float distanceToCenter(float x, float y) {
@@ -296,13 +318,15 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
 
         if (x > c.x) {
             xDist = x - c.x;
-        } else {
+        }
+        else {
             xDist = c.x - x;
         }
 
         if (y > c.y) {
             yDist = y - c.y;
-        } else {
+        }
+        else {
             yDist = c.y - y;
         }
 
@@ -315,8 +339,9 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
     /**
      * Returns the xIndex for the given angle around the center of the chart.
      * Returns -1 if not found / outofbounds.
-     * 
+     *
      * @param angle
+     *
      * @return
      */
     public abstract int getIndexForAngle(float angle);
@@ -324,7 +349,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
     /**
      * Set an offset for the rotation of the RadarChart in degrees. Default 270f
      * --> top (NORTH)
-     * 
+     *
      * @param angle
      */
     public void setRotationAngle(float angle) {
@@ -335,7 +360,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
 
     /**
      * gets the current rotation angle of the pie chart
-     * 
+     *
      * @return
      */
     public float getRotationAngle() {
@@ -345,7 +370,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
     /**
      * Set this to true to enable the rotation / spinning of the chart by touch.
      * Set it to false to disable it. Default: true
-     * 
+     *
      * @param enabled
      */
     public void setRotationEnabled(boolean enabled) {
@@ -354,7 +379,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
 
     /**
      * Returns true if rotation of the chart by touch is enabled, false if not.
-     * 
+     *
      * @return
      */
     public boolean isRotationEnabled() {
@@ -363,7 +388,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
 
     /**
      * returns the diameter of the pie- or radar-chart
-     * 
+     *
      * @return
      */
     public float getDiameter() {
@@ -373,14 +398,14 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
 
     /**
      * Returns the radius of the chart in pixels.
-     * 
+     *
      * @return
      */
     public abstract float getRadius();
 
     /**
      * Returns the required bottom offset for the chart.
-     * 
+     *
      * @return
      */
     protected abstract float getRequiredBottomOffset();
@@ -388,14 +413,14 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
     /**
      * Returns the base offset needed for the chart without calculating the
      * legend size.
-     * 
+     *
      * @return
      */
     protected abstract float getRequiredBaseOffset();
 
     /**
      * Returns the required right offset for the chart.
-     * 
+     *
      * @return
      */
     private float getFullLegendWidth() {
@@ -405,7 +430,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
     /**
      * set a new (e.g. custom) charttouchlistener NOTE: make sure to
      * setTouchEnabled(true); if you need touch gestures on the chart
-     * 
+     *
      * @param l
      */
     public void setOnTouchListener(OnTouchListener l) {
@@ -456,12 +481,14 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
      */
     /** CODE BELOW THIS RELATED TO ANIMATION */
 
-    /** objectanimator used for animating values on y-axis */
+    /**
+     * objectanimator used for animating values on y-axis
+     */
     private ObjectAnimator mSpinAnimator;
 
     /**
      * Applys a spin animation to the Chart.
-     * 
+     *
      * @param durationmillis
      * @param fromangle
      * @param toangle
@@ -469,8 +496,9 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
     @SuppressLint("NewApi")
     public void spin(int durationmillis, float fromangle, float toangle) {
 
-        if (android.os.Build.VERSION.SDK_INT < 11)
+        if (android.os.Build.VERSION.SDK_INT < 11) {
             return;
+        }
 
         mRotationAngle = fromangle;
 

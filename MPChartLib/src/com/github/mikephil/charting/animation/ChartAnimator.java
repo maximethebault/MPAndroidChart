@@ -7,13 +7,15 @@ import android.os.SystemClock;
 
 /**
  * Object responsible for all animations in the Chart.
- * 
+ *
  * @author Philipp Jahoda
  */
 @SuppressLint("NewApi")
 public class ChartAnimator {
 
-    /** object that is updated upon animation update */
+    /**
+     * object that is updated upon animation update
+     */
     private UpdateListener mListener;
 
     public ChartAnimator() {
@@ -28,15 +30,21 @@ public class ChartAnimator {
      */
     /** CODE BELOW THIS RELATED TO ANIMATION */
 
-    /** the phase that is animated and influences the drawn values on the y-axis */
+    /**
+     * the phase that is animated and influences the drawn values on the y-axis
+     */
     protected float mPhaseY = 1f;
 
-    /** the phase that is animated and influences the drawn values on the x-axis */
+    /**
+     * the phase that is animated and influences the drawn values on the x-axis
+     */
     protected float mPhaseX = 1f;
 
     private long mStartTime;
 
-    /** objectanimator used for animating values on x-axis */
+    /**
+     * objectanimator used for animating values on x-axis
+     */
     private FrameHandler mHandler;
     private final Object mLock = new Object();
     private long mXDuration = 0;
@@ -81,10 +89,11 @@ public class ChartAnimator {
      *
      * @param durationMillisX
      * @param durationMillisY
-     * @param easing an easing function to be used on the animation phase
+     * @param easing
+     *         an easing function to be used on the animation phase
      */
     public void animateXY(int durationMillisX, int durationMillisY,
-            final AnimationEasing.EasingFunction easing) {
+                          final AnimationEasing.EasingFunction easing) {
 
         stop();
 
@@ -99,8 +108,9 @@ public class ChartAnimator {
 
         mEasing = easing;
 
-        if (mEnabledX || mEnabledY)
+        if (mEnabledX || mEnabledY) {
             startAnimationLoop();
+        }
     }
 
     /**
@@ -110,12 +120,13 @@ public class ChartAnimator {
      *
      * @param durationMillisX
      * @param durationMillisY
-     * @param easing an easing function option to be used on the animation phase
+     * @param easing
+     *         an easing function option to be used on the animation phase
      */
     public void animateXY(int durationMillisX, int durationMillisY,
-            AnimationEasing.EasingOption easing) {
+                          AnimationEasing.EasingOption easing) {
         animateXY(durationMillisX, durationMillisY,
-                AnimationEasing.getEasingFunctionFromOption(easing));
+                  AnimationEasing.getEasingFunctionFromOption(easing));
     }
 
     /**
@@ -136,7 +147,8 @@ public class ChartAnimator {
      * invalidate() is necessary to refresh the chart.
      *
      * @param durationMillis
-     * @param easing an easing function to be used on the animation phase
+     * @param easing
+     *         an easing function to be used on the animation phase
      */
     public void animateY(int durationMillis, final AnimationEasing.EasingFunction easing) {
         animateXY(0, durationMillis, easing);
@@ -148,7 +160,8 @@ public class ChartAnimator {
      * invalidate() is necessary to refresh the chart.
      *
      * @param durationMillis
-     * @param easing an easing function option to be used on the animation phase
+     * @param easing
+     *         an easing function option to be used on the animation phase
      */
     public void animateY(int durationMillis, AnimationEasing.EasingOption easing) {
         animateXY(0, durationMillis, AnimationEasing.getEasingFunctionFromOption(easing));
@@ -171,7 +184,8 @@ public class ChartAnimator {
      * invalidate() is necessary to refresh the chart.
      *
      * @param durationMillis
-     * @param easing an easing function to be used on the animation phase
+     * @param easing
+     *         an easing function to be used on the animation phase
      */
     public void animateX(int durationMillis, final AnimationEasing.EasingFunction easing) {
         animateXY(durationMillis, 0, easing);
@@ -183,7 +197,8 @@ public class ChartAnimator {
      * invalidate() is necessary to refresh the chart.
      *
      * @param durationMillis
-     * @param easing an easing function option to be used on the animation phase
+     * @param easing
+     *         an easing function option to be used on the animation phase
      */
     public void animateX(int durationMillis, AnimationEasing.EasingOption easing) {
         animateXY(durationMillis, 0, AnimationEasing.getEasingFunctionFromOption(easing));
@@ -238,7 +253,7 @@ public class ChartAnimator {
 
     /**
      * Listener for callbacks on animation update.
-     * 
+     *
      * @author Philipp Jahoda
      */
     public interface UpdateListener {
@@ -256,11 +271,9 @@ public class ChartAnimator {
             post(frameHandler);
         }
 
-        private Runnable frameHandler = new Runnable()
-        {
+        private Runnable frameHandler = new Runnable() {
             @Override
-            public void run()
-            {
+            public void run() {
 
                 synchronized (mLock) {
 
@@ -271,37 +284,45 @@ public class ChartAnimator {
                         long duration = mXDuration;
                         long elapsed = elapsedTime;
 
-                        if (elapsed > duration)
+                        if (elapsed > duration) {
                             elapsed = duration;
+                        }
 
-                        if (mEasing != null)
+                        if (mEasing != null) {
                             mPhaseX = mEasing.ease(elapsed, duration);
-                        else
+                        }
+                        else {
                             mPhaseX = elapsed / (float) duration;
+                        }
                     }
 
                     if (mEnabledY) {
                         long duration = mYDuration;
                         long elapsed = elapsedTime;
 
-                        if (elapsed > duration)
+                        if (elapsed > duration) {
                             elapsed = duration;
+                        }
 
-                        if (mEasing != null)
+                        if (mEasing != null) {
                             mPhaseY = mEasing.ease(elapsed, duration);
-                        else
+                        }
+                        else {
                             mPhaseY = elapsed / (float) duration;
+                        }
                     }
 
-                    if (currentTime >= mEndTime)
+                    if (currentTime >= mEndTime) {
                         stop();
+                    }
 
                     if (mEnabledX || mEnabledY) {
                         queueNextFrame();
                     }
 
-                    if (mListener != null)
+                    if (mListener != null) {
                         mListener.onAnimationUpdate();
+                    }
                 }
 
             }

@@ -9,31 +9,47 @@ import android.view.View;
 
 public class ViewPortHandler {
 
-    /** matrix used for touch events */
+    /**
+     * matrix used for touch events
+     */
     protected final Matrix mMatrixTouch = new Matrix();
 
-    /** this rectangle defines the area in which graph values can be drawn */
+    /**
+     * this rectangle defines the area in which graph values can be drawn
+     */
     protected RectF mContentRect = new RectF();
 
     protected float mChartWidth = 0f;
     protected float mChartHeight = 0f;
 
-    /** minimum scale value on the y-axis */
+    /**
+     * minimum scale value on the y-axis
+     */
     private float mMinScaleY = 1f;
 
-    /** minimum scale value on the x-axis */
+    /**
+     * minimum scale value on the x-axis
+     */
     private float mMinScaleX = 1f;
 
-    /** contains the current scale factor of the x-axis */
+    /**
+     * contains the current scale factor of the x-axis
+     */
     private float mScaleX = 1f;
 
-    /** contains the current scale factor of the y-axis */
+    /**
+     * contains the current scale factor of the y-axis
+     */
     private float mScaleY = 1f;
 
-    /** offset that allows the chart to be dragged over its bounds on the x-axis */
+    /**
+     * offset that allows the chart to be dragged over its bounds on the x-axis
+     */
     private float mTransOffsetX = 0f;
 
-    /** offset that allows the chart to be dragged over its bounds on the x-axis */
+    /**
+     * offset that allows the chart to be dragged over its bounds on the x-axis
+     */
     private float mTransOffsetY = 0f;
 
     public ViewPortHandler() {
@@ -42,7 +58,7 @@ public class ViewPortHandler {
 
     /**
      * Sets the width and height of the chart.
-     * 
+     *
      * @param width
      * @param height
      */
@@ -50,21 +66,24 @@ public class ViewPortHandler {
         mChartHeight = height;
         mChartWidth = width;
 
-        if (mContentRect.width() <= 0 || mContentRect.height() <= 0)
+        if (mContentRect.width() <= 0 || mContentRect.height() <= 0) {
             mContentRect.set(0, 0, width, height);
+        }
     }
 
     public boolean hasChartDimens() {
-        if (mChartHeight > 0 && mChartWidth > 0)
+        if (mChartHeight > 0 && mChartWidth > 0) {
             return true;
-        else
+        }
+        else {
             return false;
+        }
     }
 
     public void restrainViewPort(float offsetLeft, float offsetTop, float offsetRight,
-            float offsetBottom) {
+                                 float offsetBottom) {
         mContentRect.set(offsetLeft, offsetTop, mChartWidth - offsetRight, mChartHeight
-                - offsetBottom);
+                                                                           - offsetBottom);
     }
 
     public float offsetLeft() {
@@ -131,7 +150,7 @@ public class ViewPortHandler {
     /**
      * Zooms in by 1.4f, x and y are the coordinates (in pixels) of the zoom
      * center.
-     * 
+     *
      * @param x
      * @param y
      */
@@ -162,9 +181,11 @@ public class ViewPortHandler {
     /**
      * Zooms in or out by the given scale factor. x and y are the coordinates
      * (in pixels) of the zoom center.
-     * 
-     * @param scaleX if < 1f --> zoom out, if > 1f --> zoom in
-     * @param scaleY if < 1f --> zoom out, if > 1f --> zoom in
+     *
+     * @param scaleX
+     *         if < 1f --> zoom out, if > 1f --> zoom in
+     * @param scaleY
+     *         if < 1f --> zoom out, if > 1f --> zoom in
      * @param x
      * @param y
      */
@@ -209,9 +230,11 @@ public class ViewPortHandler {
      * in the chart. Centering the viewport outside the bounds of the chart is
      * not possible. Makes most sense in combination with the
      * setScaleMinima(...) method.
-     * 
-     * @param pts the position to center view viewport to
+     *
+     * @param pts
+     *         the position to center view viewport to
      * @param chart
+     *
      * @return save
      */
     public synchronized void centerViewPort(final float[] transformedPts, final View view) {
@@ -249,8 +272,9 @@ public class ViewPortHandler {
 
     /**
      * call this method to refresh the graph with a given matrix
-     * 
+     *
      * @param newMatrix
+     *
      * @return
      */
     public Matrix refresh(Matrix newMatrix, View chart, boolean invalidate) {
@@ -268,7 +292,7 @@ public class ViewPortHandler {
 
     /**
      * limits the maximum scale and X translation of the given matrix
-     * 
+     *
      * @param matrix
      */
     public void limitTransAndScale(Matrix matrix, RectF content) {
@@ -321,8 +345,9 @@ public class ViewPortHandler {
 
     public void setMinimumScaleX(float xScale) {
 
-        if (xScale < 1f)
+        if (xScale < 1f) {
             xScale = 1f;
+        }
 
         mMinScaleX = xScale;
 
@@ -331,8 +356,9 @@ public class ViewPortHandler {
 
     public void setMinimumScaleY(float yScale) {
 
-        if (yScale < 1f)
+        if (yScale < 1f) {
             yScale = 1f;
+        }
 
         mMinScaleY = yScale;
 
@@ -341,7 +367,7 @@ public class ViewPortHandler {
 
     /**
      * Returns the charts-touch matrix used for translation and scale on touch.
-     * 
+     *
      * @return
      */
     public Matrix getMatrixTouch() {
@@ -351,27 +377,35 @@ public class ViewPortHandler {
     /**
      * ################ ################ ################ ################
      */
-    /** BELOW METHODS FOR BOUNDS CHECK */
+    /**
+     * BELOW METHODS FOR BOUNDS CHECK
+     */
 
     public boolean isInBoundsX(float x) {
-        if (isInBoundsLeft(x) && isInBoundsRight(x))
+        if (isInBoundsLeft(x) && isInBoundsRight(x)) {
             return true;
-        else
+        }
+        else {
             return false;
+        }
     }
 
     public boolean isInBoundsY(float y) {
-        if (isInBoundsTop(y) && isInBoundsBottom(y))
+        if (isInBoundsTop(y) && isInBoundsBottom(y)) {
             return true;
-        else
+        }
+        else {
             return false;
+        }
     }
 
     public boolean isInBounds(float x, float y) {
-        if (isInBoundsX(x) && isInBoundsY(y))
+        if (isInBoundsX(x) && isInBoundsY(y)) {
             return true;
-        else
+        }
+        else {
             return false;
+        }
     }
 
     public boolean isInBoundsLeft(float x) {
@@ -406,46 +440,52 @@ public class ViewPortHandler {
 
     /**
      * if the chart is fully zoomed out, return true
-     * 
+     *
      * @return
      */
     public boolean isFullyZoomedOut() {
 
-        if (isFullyZoomedOutX() && isFullyZoomedOutY())
+        if (isFullyZoomedOutX() && isFullyZoomedOutY()) {
             return true;
-        else
+        }
+        else {
             return false;
+        }
     }
 
     /**
      * Returns true if the chart is fully zoomed out on it's y-axis (vertical).
-     * 
+     *
      * @return
      */
     public boolean isFullyZoomedOutY() {
-        if (mScaleY > mMinScaleY || mMinScaleY > 1f)
+        if (mScaleY > mMinScaleY || mMinScaleY > 1f) {
             return false;
-        else
+        }
+        else {
             return true;
+        }
     }
 
     /**
      * Returns true if the chart is fully zoomed out on it's x-axis
      * (horizontal).
-     * 
+     *
      * @return
      */
     public boolean isFullyZoomedOutX() {
-        if (mScaleX > mMinScaleX || mMinScaleX > 1f)
+        if (mScaleX > mMinScaleX || mMinScaleX > 1f) {
             return false;
-        else
+        }
+        else {
             return true;
+        }
     }
 
     /**
      * Set an offset in dp that allows the user to drag the chart over it's
      * bounds on the x-axis.
-     * 
+     *
      * @param offset
      */
     public void setDragOffsetX(float offset) {
@@ -455,7 +495,7 @@ public class ViewPortHandler {
     /**
      * Set an offset in dp that allows the user to drag the chart over it's
      * bounds on the y-axis.
-     * 
+     *
      * @param offset
      */
     public void setDragOffsetY(float offset) {
@@ -464,7 +504,7 @@ public class ViewPortHandler {
 
     /**
      * Returns true if both drag offsets (x and y) are zero or smaller.
-     * 
+     *
      * @return
      */
     public boolean hasNoDragOffset() {

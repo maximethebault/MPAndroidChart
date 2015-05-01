@@ -6,7 +6,7 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
 
 /**
  * Abstract baseclass of all Renderers.
- * 
+ *
  * @author Philipp Jahoda
  */
 public abstract class Renderer {
@@ -27,24 +27,27 @@ public abstract class Renderer {
     /**
      * Returns true if the specified value fits in between the provided min
      * and max bounds, false if not.
-     * 
+     *
      * @param val
      * @param min
      * @param max
+     *
      * @return
      */
     protected boolean fitsBounds(float val, float min, float max) {
 
-        if (val < min || val > max)
+        if (val < min || val > max) {
             return false;
-        else
+        }
+        else {
             return true;
+        }
     }
 
     /**
      * Calculates the minimum and maximum x-value the chart can currently
      * display (with the given zoom level).
-     * 
+     *
      * @param trans
      */
     protected void calcXBounds(Transformer trans) {
@@ -52,9 +55,11 @@ public abstract class Renderer {
         double minx = trans.getValuesByTouchPoint(mViewPortHandler.contentLeft(), 0).x;
         double maxx = trans.getValuesByTouchPoint(mViewPortHandler.contentRight(), 0).x;
 
-        if (!Double.isInfinite(minx))
+        if (!Double.isInfinite(minx)) {
             mMinX = (int) minx;
-        if (!Double.isInfinite(maxx))
+        }
+        if (!Double.isInfinite(maxx)) {
             mMaxX = (int) Math.ceil(maxx);
+        }
     }
 }

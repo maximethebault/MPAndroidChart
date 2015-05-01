@@ -3,14 +3,13 @@ package com.github.mikephil.charting.charts;
 
 import android.content.Context;
 import android.util.AttributeSet;
-
 import com.github.mikephil.charting.data.CandleData;
 import com.github.mikephil.charting.interfaces.CandleDataProvider;
 import com.github.mikephil.charting.renderer.CandleStickChartRenderer;
 
 /**
  * Financial chart type that draws candle-sticks (OHCL chart).
- * 
+ *
  * @author Philipp Jahoda
  */
 public class CandleStickChart extends BarLineChartBase<CandleData> implements CandleDataProvider {
