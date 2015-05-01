@@ -2,7 +2,9 @@
 package com.github.mikephil.charting.renderer;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
+
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.buffer.CandleBodyBuffer;
 import com.github.mikephil.charting.buffer.CandleShadowBuffer;
@@ -11,7 +13,11 @@ import com.github.mikephil.charting.data.CandleDataSet;
 import com.github.mikephil.charting.data.CandleEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.interfaces.CandleDataProvider;
-import com.github.mikephil.charting.utils.*;
+import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.utils.Highlight;
+import com.github.mikephil.charting.utils.Transformer;
+import com.github.mikephil.charting.utils.Utils;
+import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.util.List;
 
@@ -23,7 +29,7 @@ public class CandleStickChartRenderer extends DataRenderer {
     private CandleBodyBuffer[] mBodyBuffers;
 
     public CandleStickChartRenderer(CandleDataProvider chart, ChartAnimator animator,
-                                    ViewPortHandler viewPortHandler) {
+            ViewPortHandler viewPortHandler) {
         super(animator, viewPortHandler);
         mChart = chart;
     }
@@ -48,16 +54,14 @@ public class CandleStickChartRenderer extends DataRenderer {
 
         for (CandleDataSet set : candleData.getDataSets()) {
 
-            if (set.isVisible()) {
+            if (set.isVisible())
                 drawDataSet(c, set);
-            }
         }
     }
 
     protected void drawDataSet(Canvas c, CandleDataSet dataSet) {
 
         Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
-        calcXBounds(trans);
 
         float phaseX = mAnimator.getPhaseX();
         float phaseY = mAnimator.getPhaseY();
@@ -69,11 +73,11 @@ public class CandleStickChartRenderer extends DataRenderer {
         Entry entryFrom = dataSet.getEntryForXIndex(mMinX);
         Entry entryTo = dataSet.getEntryForXIndex(mMaxX);
 
-        int minx = dataSet.getEntryPosition(entryFrom);
+        int minx = Math.max(dataSet.getEntryPosition(entryFrom), 0);
         int maxx = Math.min(dataSet.getEntryPosition(entryTo) + 1, entries.size());
 
         int range = (maxx - minx) * 4;
-        int to = (int) Math.ceil((maxx - minx) * phaseX + minx);
+        int to = (int)Math.ceil((maxx - minx) * phaseX + minx);
 
         CandleShadowBuffer shadowBuffer = mShadowBuffers[dataSetIndex];
         shadowBuffer.setPhases(phaseX, phaseY);
@@ -88,8 +92,7 @@ public class CandleStickChartRenderer extends DataRenderer {
         // If not set, use default functionality for backward compatibility
         if (dataSet.getShadowColor() == ColorTemplate.COLOR_NONE) {
             mRenderPaint.setColor(dataSet.getColor());
-        }
-        else {
+        } else {
             mRenderPaint.setColor(dataSet.getShadowColor());
         }
 
@@ -113,9 +116,8 @@ public class CandleStickChartRenderer extends DataRenderer {
             // get the entry
             CandleEntry e = entries.get(j / 4 + minx);
 
-            if (!fitsBounds(e.getXIndex(), mMinX, to)) {
+            if (!fitsBounds(e.getXIndex(), mMinX, to))
                 continue;
-            }
 
             float leftBody = bodyBuffer.buffer[j];
             float open = bodyBuffer.buffer[j + 1];
@@ -127,8 +129,7 @@ public class CandleStickChartRenderer extends DataRenderer {
 
                 if (dataSet.getDecreasingColor() == ColorTemplate.COLOR_NONE) {
                     mRenderPaint.setColor(dataSet.getColor(j / 4 + minx));
-                }
-                else {
+                } else {
                     mRenderPaint.setColor(dataSet.getDecreasingColor());
                 }
 
@@ -136,19 +137,22 @@ public class CandleStickChartRenderer extends DataRenderer {
                 // draw the body
                 c.drawRect(leftBody, close, rightBody, open, mRenderPaint);
 
-            }
-            else {
+            } else if(open < close) {
 
                 if (dataSet.getIncreasingColor() == ColorTemplate.COLOR_NONE) {
                     mRenderPaint.setColor(dataSet.getColor(j / 4 + minx));
-                }
-                else {
+                } else {
                     mRenderPaint.setColor(dataSet.getIncreasingColor());
                 }
 
                 mRenderPaint.setStyle(dataSet.getIncreasingPaintStyle());
                 // draw the body
                 c.drawRect(leftBody, open, rightBody, close, mRenderPaint);
+            } else { // equal values
+                
+                mRenderPaint.setColor(Color.BLACK);
+                mRenderPaint.setStyle(Paint.Style.STROKE);
+                c.drawLine(leftBody, open, rightBody, close, mRenderPaint);
             }
         }
     }
@@ -197,7 +201,7 @@ public class CandleStickChartRenderer extends DataRenderer {
 
         // if values are drawn
         if (mChart.getCandleData().getYValCount() < mChart.getMaxVisibleCount()
-                                                    * mViewPortHandler.getScaleX()) {
+                * mViewPortHandler.getScaleX()) {
 
             List<CandleDataSet> dataSets = mChart.getCandleData().getDataSets();
 
@@ -205,9 +209,8 @@ public class CandleStickChartRenderer extends DataRenderer {
 
                 CandleDataSet dataSet = dataSets.get(i);
 
-                if (!dataSet.isDrawValuesEnabled()) {
+                if (!dataSet.isDrawValuesEnabled())
                     continue;
-                }
 
                 // apply the text-styling defined by the DataSet
                 applyValueTextStyle(dataSet);
@@ -219,7 +222,7 @@ public class CandleStickChartRenderer extends DataRenderer {
                 Entry entryFrom = dataSet.getEntryForXIndex(mMinX);
                 Entry entryTo = dataSet.getEntryForXIndex(mMaxX);
 
-                int minx = dataSet.getEntryPosition(entryFrom);
+                int minx = Math.max(dataSet.getEntryPosition(entryFrom), 0);
                 int maxx = Math.min(dataSet.getEntryPosition(entryTo) + 1, entries.size());
 
                 float[] positions = trans.generateTransformedValuesCandle(
@@ -232,18 +235,16 @@ public class CandleStickChartRenderer extends DataRenderer {
                     float x = positions[j];
                     float y = positions[j + 1];
 
-                    if (!mViewPortHandler.isInBoundsRight(x)) {
+                    if (!mViewPortHandler.isInBoundsRight(x))
                         break;
-                    }
 
-                    if (!mViewPortHandler.isInBoundsLeft(x) || !mViewPortHandler.isInBoundsY(y)) {
+                    if (!mViewPortHandler.isInBoundsLeft(x) || !mViewPortHandler.isInBoundsY(y))
                         continue;
-                    }
 
                     float val = entries.get(j / 2 + minx).getHigh();
 
                     c.drawText(dataSet.getValueFormatter().getFormattedValue(val), x, y - yOffset,
-                               mValuePaint);
+                            mValuePaint);
                 }
             }
         }
@@ -259,22 +260,20 @@ public class CandleStickChartRenderer extends DataRenderer {
         for (int i = 0; i < indices.length; i++) {
 
             int xIndex = indices[i].getXIndex(); // get the
-            // x-position
+                                                 // x-position
 
             CandleDataSet set = mChart.getCandleData().getDataSetByIndex(
                     indices[i].getDataSetIndex());
 
-            if (set == null) {
+            if (set == null)
                 continue;
-            }
 
             mHighlightPaint.setColor(set.getHighLightColor());
 
             CandleEntry e = set.getEntryForXIndex(xIndex);
 
-            if (e == null) {
+            if (e == null)
                 continue;
-            }
 
             float low = e.getLow() * mAnimator.getPhaseY();
             float high = e.getHigh() * mAnimator.getPhaseY();
@@ -288,7 +287,7 @@ public class CandleStickChartRenderer extends DataRenderer {
             };
 
             float[] horPts = new float[] {
-                    0, low, mChart.getXChartMax(), low, 0, high, mChart.getXChartMax(), high
+                    mChart.getXChartMin(), low, mChart.getXChartMax(), low, mChart.getXChartMin(), high, mChart.getXChartMax(), high
             };
 
             mChart.getTransformer(set.getAxisDependency()).pointValuesToPixel(vertPts);

@@ -4,7 +4,6 @@ package com.github.mikephil.charting.utils;
 import android.graphics.Matrix;
 import android.graphics.PointF;
 import android.graphics.RectF;
-import android.util.Log;
 import android.view.View;
 
 public class ViewPortHandler {
@@ -245,7 +244,7 @@ public class ViewPortHandler {
         final float x = transformedPts[0] - offsetLeft();
         final float y = transformedPts[1] - offsetTop();
 
-        Log.i("", "Moving view to x: " + x + ", y: " + y);
+        //Log.i("", "Moving view to x: " + x + ", y: " + y);
 
         save.postTranslate(-x, -y);
 
@@ -284,7 +283,8 @@ public class ViewPortHandler {
         // make sure scale and translation are within their bounds
         limitTransAndScale(mMatrixTouch, mContentRect);
 
-        chart.invalidate();
+        if (invalidate)
+            chart.invalidate();
 
         newMatrix.set(mMatrixTouch);
         return newMatrix;
@@ -413,6 +413,7 @@ public class ViewPortHandler {
     }
 
     public boolean isInBoundsRight(float x) {
+        x = (float)((int)(x * 100.f)) / 100.f;
         return mContentRect.right >= x ? true : false;
     }
 
@@ -421,6 +422,7 @@ public class ViewPortHandler {
     }
 
     public boolean isInBoundsBottom(float y) {
+        y = (float)((int)(y * 100.f)) / 100.f;
         return mContentRect.bottom >= y ? true : false;
     }
 

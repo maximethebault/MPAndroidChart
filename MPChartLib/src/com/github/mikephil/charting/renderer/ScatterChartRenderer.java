@@ -4,6 +4,7 @@ package com.github.mikephil.charting.renderer;
 import android.graphics.Canvas;
 import android.graphics.Paint.Style;
 import android.graphics.Path;
+
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.buffer.ScatterBuffer;
 import com.github.mikephil.charting.charts.ScatterChart.ScatterShape;
@@ -25,7 +26,7 @@ public class ScatterChartRenderer extends DataRenderer {
     protected ScatterBuffer[] mScatterBuffers;
 
     public ScatterChartRenderer(ScatterDataProvider chart, ChartAnimator animator,
-                                ViewPortHandler viewPortHandler) {
+            ViewPortHandler viewPortHandler) {
         super(animator, viewPortHandler);
         mChart = chart;
 
@@ -52,16 +53,14 @@ public class ScatterChartRenderer extends DataRenderer {
 
         for (ScatterDataSet set : scatterData.getDataSets()) {
 
-            if (set.isVisible()) {
+            if (set.isVisible())
                 drawDataSet(c, set);
-            }
         }
     }
 
     protected void drawDataSet(Canvas c, ScatterDataSet dataSet) {
 
         Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
-        calcXBounds(trans);
 
         float phaseX = mAnimator.getPhaseX();
         float phaseY = mAnimator.getPhaseY();
@@ -86,20 +85,18 @@ public class ScatterChartRenderer extends DataRenderer {
 
                 for (int i = 0; i < buffer.size(); i += 2) {
 
-                    if (!mViewPortHandler.isInBoundsRight(buffer.buffer[i])) {
+                    if (!mViewPortHandler.isInBoundsRight(buffer.buffer[i]))
                         break;
-                    }
 
                     if (!mViewPortHandler.isInBoundsLeft(buffer.buffer[i])
-                        || !mViewPortHandler.isInBoundsY(buffer.buffer[i + 1])) {
+                            || !mViewPortHandler.isInBoundsY(buffer.buffer[i + 1]))
                         continue;
-                    }
 
                     mRenderPaint.setColor(dataSet.getColor(i / 2));
                     c.drawRect(buffer.buffer[i] - shapeHalf,
-                               buffer.buffer[i + 1] - shapeHalf, buffer.buffer[i]
-                                                                 + shapeHalf, buffer.buffer[i + 1]
-                                                                              + shapeHalf, mRenderPaint);
+                            buffer.buffer[i + 1] - shapeHalf, buffer.buffer[i]
+                                    + shapeHalf, buffer.buffer[i + 1]
+                                    + shapeHalf, mRenderPaint);
                 }
                 break;
             case CIRCLE:
@@ -108,18 +105,16 @@ public class ScatterChartRenderer extends DataRenderer {
 
                 for (int i = 0; i < buffer.size(); i += 2) {
 
-                    if (!mViewPortHandler.isInBoundsRight(buffer.buffer[i])) {
+                    if (!mViewPortHandler.isInBoundsRight(buffer.buffer[i]))
                         break;
-                    }
 
                     if (!mViewPortHandler.isInBoundsLeft(buffer.buffer[i])
-                        || !mViewPortHandler.isInBoundsY(buffer.buffer[i + 1])) {
+                            || !mViewPortHandler.isInBoundsY(buffer.buffer[i + 1]))
                         continue;
-                    }
 
                     mRenderPaint.setColor(dataSet.getColor(i / 2));
                     c.drawCircle(buffer.buffer[i], buffer.buffer[i + 1], shapeHalf,
-                                 mRenderPaint);
+                            mRenderPaint);
                 }
                 break;
             case TRIANGLE:
@@ -131,14 +126,12 @@ public class ScatterChartRenderer extends DataRenderer {
 
                 for (int i = 0; i < buffer.size(); i += 2) {
 
-                    if (!mViewPortHandler.isInBoundsRight(buffer.buffer[i])) {
+                    if (!mViewPortHandler.isInBoundsRight(buffer.buffer[i]))
                         break;
-                    }
 
                     if (!mViewPortHandler.isInBoundsLeft(buffer.buffer[i])
-                        || !mViewPortHandler.isInBoundsY(buffer.buffer[i + 1])) {
+                            || !mViewPortHandler.isInBoundsY(buffer.buffer[i + 1]))
                         continue;
-                    }
 
                     mRenderPaint.setColor(dataSet.getColor(i / 2));
                     tri.moveTo(buffer.buffer[i], buffer.buffer[i + 1] - shapeHalf);
@@ -156,23 +149,21 @@ public class ScatterChartRenderer extends DataRenderer {
 
                 for (int i = 0; i < buffer.size(); i += 2) {
 
-                    if (!mViewPortHandler.isInBoundsRight(buffer.buffer[i])) {
+                    if (!mViewPortHandler.isInBoundsRight(buffer.buffer[i]))
                         break;
-                    }
 
                     if (!mViewPortHandler.isInBoundsLeft(buffer.buffer[i])
-                        || !mViewPortHandler.isInBoundsY(buffer.buffer[i + 1])) {
+                            || !mViewPortHandler.isInBoundsY(buffer.buffer[i + 1]))
                         continue;
-                    }
 
                     mRenderPaint.setColor(dataSet.getColor(i / 2));
 
                     c.drawLine(buffer.buffer[i] - shapeHalf, buffer.buffer[i + 1],
-                               buffer.buffer[i] + shapeHalf,
-                               buffer.buffer[i + 1], mRenderPaint);
+                            buffer.buffer[i] + shapeHalf,
+                            buffer.buffer[i + 1], mRenderPaint);
                     c.drawLine(buffer.buffer[i], buffer.buffer[i + 1] - shapeHalf,
-                               buffer.buffer[i], buffer.buffer[i + 1]
-                                                 + shapeHalf, mRenderPaint);
+                            buffer.buffer[i], buffer.buffer[i + 1]
+                                    + shapeHalf, mRenderPaint);
                 }
                 break;
             default:
@@ -210,7 +201,7 @@ public class ScatterChartRenderer extends DataRenderer {
 
         // if values are drawn
         if (mChart.getScatterData().getYValCount() < mChart.getMaxVisibleCount()
-                                                     * mViewPortHandler.getScaleX()) {
+                * mViewPortHandler.getScaleX()) {
 
             List<ScatterDataSet> dataSets = mChart.getScatterData().getDataSets();
 
@@ -218,9 +209,8 @@ public class ScatterChartRenderer extends DataRenderer {
 
                 ScatterDataSet dataSet = dataSets.get(i);
 
-                if (!dataSet.isDrawValuesEnabled()) {
+                if (!dataSet.isDrawValuesEnabled())
                     continue;
-                }
 
                 // apply the text-styling defined by the DataSet
                 applyValueTextStyle(dataSet);
@@ -228,28 +218,26 @@ public class ScatterChartRenderer extends DataRenderer {
                 List<Entry> entries = dataSet.getYVals();
 
                 float[] positions = mChart.getTransformer(dataSet.getAxisDependency())
-                                          .generateTransformedValuesScatter(entries,
-                                                                            mAnimator.getPhaseY());
+                        .generateTransformedValuesScatter(entries,
+                                mAnimator.getPhaseY());
 
                 float shapeSize = dataSet.getScatterShapeSize();
 
                 for (int j = 0; j < positions.length * mAnimator.getPhaseX(); j += 2) {
 
-                    if (!mViewPortHandler.isInBoundsRight(positions[j])) {
+                    if (!mViewPortHandler.isInBoundsRight(positions[j]))
                         break;
-                    }
 
                     // make sure the lines don't do shitty things outside bounds
-                    if (j != 0 && (!mViewPortHandler.isInBoundsLeft(positions[j])
-                                   || !mViewPortHandler.isInBoundsY(positions[j + 1]))) {
+                    if ((!mViewPortHandler.isInBoundsLeft(positions[j])
+                            || !mViewPortHandler.isInBoundsY(positions[j + 1])))
                         continue;
-                    }
 
                     float val = entries.get(j / 2).getVal();
 
                     c.drawText(dataSet.getValueFormatter().getFormattedValue(val), positions[j],
-                               positions[j + 1] - shapeSize,
-                               mValuePaint);
+                            positions[j + 1] - shapeSize,
+                            mValuePaint);
                 }
             }
         }
@@ -265,23 +253,21 @@ public class ScatterChartRenderer extends DataRenderer {
         for (int i = 0; i < indices.length; i++) {
 
             ScatterDataSet set = mChart.getScatterData().getDataSetByIndex(indices[i]
-                                                                                   .getDataSetIndex());
+                    .getDataSetIndex());
 
-            if (set == null) {
+            if (set == null)
                 continue;
-            }
 
             mHighlightPaint.setColor(set.getHighLightColor());
 
             int xIndex = indices[i].getXIndex(); // get the
-            // x-position
+                                                 // x-position
 
-            if (xIndex > mChart.getXChartMax() * mAnimator.getPhaseX()) {
+            if (xIndex > mChart.getXChartMax() * mAnimator.getPhaseX())
                 continue;
-            }
 
             float y = set.getYValForXIndex(xIndex) * mAnimator.getPhaseY(); // get
-            // the
+                                                                            // the
             // y-position
 
             float[] pts = new float[] {

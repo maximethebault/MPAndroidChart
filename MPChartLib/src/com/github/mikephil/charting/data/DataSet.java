@@ -4,6 +4,7 @@ package com.github.mikephil.charting.data;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
+
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.DefaultValueFormatter;
@@ -18,81 +19,55 @@ import java.util.List;
  * Chart that belong together. It is designed to logically separate different
  * groups of values inside the Chart (e.g. the values for a specific line in the
  * LineChart, or the values of a specific group of bars in the BarChart).
- *
+ * 
  * @author Philipp Jahoda
  */
 public abstract class DataSet<T extends Entry> {
 
-    /**
-     * List representing all colors that are used for this DataSet
-     */
+    /** List representing all colors that are used for this DataSet */
     protected List<Integer> mColors = null;
 
-    /**
-     * the entries that this dataset represents / holds together
-     */
+    /** the entries that this dataset represents / holds together */
     protected List<T> mYVals = null;
 
-    /**
-     * maximum y-value in the y-value array
-     */
+    /** maximum y-value in the y-value array */
     protected float mYMax = 0.0f;
 
-    /**
-     * the minimum y-value in the y-value array
-     */
+    /** the minimum y-value in the y-value array */
     protected float mYMin = 0.0f;
 
-    /**
-     * the total sum of all y-values
-     */
+    /** the total sum of all y-values */
     private float mYValueSum = 0f;
 
-    /**
-     * label that describes the DataSet or the data the DataSet represents
-     */
+    /** label that describes the DataSet or the data the DataSet represents */
     private String mLabel = "DataSet";
 
-    /**
-     * flag that indicates if the DataSet is visible or not
-     */
+    /** flag that indicates if the DataSet is visible or not */
     private boolean mVisible = true;
 
-    /**
-     * if true, y-values are drawn on the chart
-     */
+    /** if true, y-values are drawn on the chart */
     protected boolean mDrawValues = true;
 
-    /**
-     * the color used for the value-text
-     */
+    /** the color used for the value-text */
     private int mValueColor = Color.BLACK;
 
-    /**
-     * the size of the value-text labels
-     */
+    /** the size of the value-text labels */
     private float mValueTextSize = 17f;
 
-    /**
-     * the typeface used for the value text
-     */
+    /** the typeface used for the value text */
     private Typeface mValueTypeface;
 
-    /**
-     * custom formatter that is used instead of the auto-formatter if set
-     */
+    /** custom formatter that is used instead of the auto-formatter if set */
     protected ValueFormatter mValueFormatter;
 
-    /**
-     * this specifies which axis this DataSet should be plotted against
-     */
+    /** this specifies which axis this DataSet should be plotted against */
     protected AxisDependency mAxisDependency = AxisDependency.LEFT;
 
     /**
      * Creates a new DataSet object with the given values it represents. Also, a
      * label that describes the DataSet can be specified. The label can also be
      * used to retrieve the DataSet from a ChartData object.
-     *
+     * 
      * @param yVals
      * @param label
      */
@@ -101,10 +76,9 @@ public abstract class DataSet<T extends Entry> {
         this.mLabel = label;
         this.mYVals = yVals;
 
-        if (mYVals == null) {
+        if (mYVals == null)
             mYVals = new ArrayList<T>();
-        }
-
+        
         mColors = new ArrayList<Integer>();
 
         // default color
@@ -139,13 +113,11 @@ public abstract class DataSet<T extends Entry> {
 
             if (e != null) {
 
-                if (e.getVal() < mYMin) {
+                if (e.getVal() < mYMin)
                     mYMin = e.getVal();
-                }
 
-                if (e.getVal() > mYMax) {
+                if (e.getVal() > mYMax)
                     mYMax = e.getVal();
-                }
             }
         }
     }
@@ -159,15 +131,14 @@ public abstract class DataSet<T extends Entry> {
 
         for (int i = 0; i < mYVals.size(); i++) {
             Entry e = mYVals.get(i);
-            if (e != null) {
+            if (e != null)
                 mYValueSum += Math.abs(e.getVal());
-            }
         }
     }
 
     /**
      * returns the number of y-values this DataSet represents
-     *
+     * 
      * @return
      */
     public int getEntryCount() {
@@ -179,21 +150,18 @@ public abstract class DataSet<T extends Entry> {
      * Float.NaN if no value is at the given x-index. INFORMATION: This method
      * does calculations at runtime. Do not over-use in performance critical
      * situations.
-     *
+     * 
      * @param xIndex
-     *
      * @return
      */
     public float getYValForXIndex(int xIndex) {
 
         Entry e = getEntryForXIndex(xIndex);
 
-        if (e != null) {
+        if (e != null)
             return e.getVal();
-        }
-        else {
+        else
             return Float.NaN;
-        }
     }
 
     /**
@@ -202,9 +170,8 @@ public abstract class DataSet<T extends Entry> {
      * returns the Entry at the closest x-index. Returns null if no Entry object
      * at that index. INFORMATION: This method does calculations at runtime. Do
      * not over-use in performance critical situations.
-     *
+     * 
      * @param xIndex
-     *
      * @return
      */
     public T getEntryForXIndex(int x) {
@@ -217,19 +184,16 @@ public abstract class DataSet<T extends Entry> {
             int m = (high + low) / 2;
 
             if (x == mYVals.get(m).getXIndex()) {
-                while (m > 0 && mYVals.get(m - 1).getXIndex() == x) {
+                while (m > 0 && mYVals.get(m - 1).getXIndex() == x)
                     m--;
-                }
 
                 return mYVals.get(m);
             }
 
-            if (x > mYVals.get(m).getXIndex()) {
+            if (x > mYVals.get(m).getXIndex())
                 low = m + 1;
-            }
-            else {
+            else
                 high = m - 1;
-            }
 
             closest = mYVals.get(m);
         }
@@ -241,9 +205,8 @@ public abstract class DataSet<T extends Entry> {
      * Returns all Entry objects at the given xIndex. INFORMATION: This method
      * does calculations at runtime. Do not over-use in performance critical
      * situations.
-     *
+     * 
      * @param xIndex
-     *
      * @return
      */
     public List<T> getEntriesForXIndex(int x) {
@@ -258,28 +221,28 @@ public abstract class DataSet<T extends Entry> {
             T entry = mYVals.get(m);
 
             if (x == entry.getXIndex()) {
-                while (m > 0 && mYVals.get(m - 1).getXIndex() == x) {
+                while (m > 0 && mYVals.get(m - 1).getXIndex() == x)
                     m--;
-                }
 
                 high = mYVals.size();
-                for (; m < high; m++) {
+                for (; m < high; m++)
+                {
                     entry = mYVals.get(m);
-                    if (entry.getXIndex() == x) {
+                    if (entry.getXIndex() == x)
+                    {
                         entries.add(entry);
                     }
-                    else {
+                    else
+                    {
                         break;
                     }
                 }
             }
 
-            if (x > entry.getXIndex()) {
+            if (x > entry.getXIndex())
                 low = m + 1;
-            }
-            else {
+            else
                 high = m - 1;
-            }
         }
 
         return entries;
@@ -287,7 +250,7 @@ public abstract class DataSet<T extends Entry> {
 
     /**
      * returns the DataSets Entry array
-     *
+     * 
      * @return
      */
     public List<T> getYVals() {
@@ -296,7 +259,7 @@ public abstract class DataSet<T extends Entry> {
 
     /**
      * gets the sum of all y-values
-     *
+     * 
      * @return
      */
     public float getYValueSum() {
@@ -305,7 +268,7 @@ public abstract class DataSet<T extends Entry> {
 
     /**
      * returns the minimum y-value this DataSet holds
-     *
+     * 
      * @return
      */
     public float getYMin() {
@@ -314,7 +277,7 @@ public abstract class DataSet<T extends Entry> {
 
     /**
      * returns the maximum y-value this DataSet holds
-     *
+     * 
      * @return
      */
     public float getYMax() {
@@ -323,7 +286,7 @@ public abstract class DataSet<T extends Entry> {
 
     /**
      * Returns the number of entries this DataSet holds.
-     *
+     * 
      * @return
      */
     public int getValueCount() {
@@ -335,17 +298,15 @@ public abstract class DataSet<T extends Entry> {
      * index in the Entry array of the DataSet. IMPORTANT: This method does
      * calculations at runtime, do not over-use in performance critical
      * situations.
-     *
+     * 
      * @param xIndex
-     *
      * @return
      */
     public int getIndexInEntries(int xIndex) {
 
         for (int i = 0; i < mYVals.size(); i++) {
-            if (xIndex == mYVals.get(i).getXIndex()) {
+            if (xIndex == mYVals.get(i).getXIndex())
                 return i;
-            }
         }
 
         return -1;
@@ -353,7 +314,7 @@ public abstract class DataSet<T extends Entry> {
 
     /**
      * Provides an exact copy of the DataSet this method is used on.
-     *
+     * 
      * @return
      */
     public abstract DataSet<T> copy();
@@ -371,7 +332,7 @@ public abstract class DataSet<T extends Entry> {
     /**
      * Returns a simple string representation of the DataSet with the type and
      * the number of Entries.
-     *
+     * 
      * @return
      */
     public String toSimpleString() {
@@ -385,9 +346,7 @@ public abstract class DataSet<T extends Entry> {
      *
      * @return
      */
-    public void setLabel(String label) {
-        mLabel = label;
-    }
+    public void setLabel(String label) { mLabel = label; }
 
     /**
      * Returns the label string that describes the DataSet.
@@ -401,7 +360,7 @@ public abstract class DataSet<T extends Entry> {
     /**
      * Set the visibility of this DataSet. If not visible, the DataSet will not
      * be drawn to the chart upon refreshing it.
-     *
+     * 
      * @param visible
      */
     public void setVisible(boolean visible) {
@@ -411,7 +370,7 @@ public abstract class DataSet<T extends Entry> {
     /**
      * Returns true if this DataSet is visible inside the chart, or false if it
      * is currently hidden.
-     *
+     * 
      * @return
      */
     public boolean isVisible() {
@@ -420,7 +379,7 @@ public abstract class DataSet<T extends Entry> {
 
     /**
      * Returns the axis this DataSet should be plotted against.
-     *
+     * 
      * @return
      */
     public AxisDependency getAxisDependency() {
@@ -430,7 +389,7 @@ public abstract class DataSet<T extends Entry> {
     /**
      * Set the y-axis this DataSet should be plotted against (either LEFT or
      * RIGHT). Default: LEFT
-     *
+     * 
      * @param dependency
      */
     public void setAxisDependency(AxisDependency dependency) {
@@ -466,26 +425,23 @@ public abstract class DataSet<T extends Entry> {
     @SuppressWarnings("unchecked")
     public void addEntry(Entry e) {
 
-        if (e == null) {
+        if (e == null)
             return;
-        }
 
         float val = e.getVal();
 
-        if (mYVals == null || mYVals.size() <= 0) {
-
+        if(mYVals == null) {
             mYVals = new ArrayList<T>();
+        }
+
+        if (mYVals.size() == 0) {
             mYMax = val;
             mYMin = val;
-        }
-        else {
-
-            if (mYMax < val) {
+        } else {
+            if (mYMax < val)
                 mYMax = val;
-            }
-            if (mYMin > val) {
+            if (mYMin > val)
                 mYMin = val;
-            }
         }
 
         mYValueSum += val;
@@ -499,14 +455,13 @@ public abstract class DataSet<T extends Entry> {
      * recalculate the current minimum and maximum values of the DataSet and the
      * value-sum. Returns true if an Entry was removed, false if no Entry could
      * be removed.
-     *
+     * 
      * @param e
      */
     public boolean removeEntry(T e) {
 
-        if (e == null) {
+        if (e == null)
             return false;
-        }
 
         // remove the entry
         boolean removed = mYVals.remove(e);
@@ -525,7 +480,7 @@ public abstract class DataSet<T extends Entry> {
     /**
      * Removes the Entry object that has the given xIndex from the DataSet.
      * Returns true if an Entry was removed, false if no Entry could be removed.
-     *
+     * 
      * @param xIndex
      */
     public boolean removeEntry(int xIndex) {
@@ -542,7 +497,7 @@ public abstract class DataSet<T extends Entry> {
      * the size of the colors array. If you are using colors from the resources,
      * make sure that the colors are already prepared (by calling
      * getResources().getColor(...)) before adding them to the DataSet.
-     *
+     * 
      * @param colors
      */
     public void setColors(List<Integer> colors) {
@@ -555,7 +510,7 @@ public abstract class DataSet<T extends Entry> {
      * the size of the colors array. If you are using colors from the resources,
      * make sure that the colors are already prepared (by calling
      * getResources().getColor(...)) before adding them to the DataSet.
-     *
+     * 
      * @param colors
      */
     public void setColors(int[] colors) {
@@ -569,7 +524,7 @@ public abstract class DataSet<T extends Entry> {
      * "new int[] { R.color.red, R.color.green, ... }" to provide colors for
      * this method. Internally, the colors are resolved using
      * getResources().getColor(...)
-     *
+     * 
      * @param colors
      */
     public void setColors(int[] colors, Context c) {
@@ -585,20 +540,19 @@ public abstract class DataSet<T extends Entry> {
 
     /**
      * Adds a new color to the colors array of the DataSet.
-     *
+     * 
      * @param color
      */
     public void addColor(int color) {
-        if (mColors == null) {
+        if (mColors == null)
             mColors = new ArrayList<Integer>();
-        }
         mColors.add(color);
     }
 
     /**
      * Sets the one and ONLY color that should be used for this DataSet.
      * Internally, this recreates the colors array and adds the specified color.
-     *
+     * 
      * @param color
      */
     public void setColor(int color) {
@@ -608,7 +562,7 @@ public abstract class DataSet<T extends Entry> {
 
     /**
      * returns all the colors that are set for this DataSet
-     *
+     * 
      * @return
      */
     public List<Integer> getColors() {
@@ -618,9 +572,8 @@ public abstract class DataSet<T extends Entry> {
     /**
      * Returns the color at the given index of the DataSet's color array.
      * Performs a IndexOutOfBounds check by modulus.
-     *
+     * 
      * @param index
-     *
      * @return
      */
     public int getColor(int index) {
@@ -630,7 +583,7 @@ public abstract class DataSet<T extends Entry> {
     /**
      * Returns the first color (index 0) of the colors-array this DataSet
      * contains.
-     *
+     * 
      * @return
      */
     public int getColor() {
@@ -647,17 +600,15 @@ public abstract class DataSet<T extends Entry> {
     /**
      * Returns the position of the provided entry in the DataSets Entry array.
      * Returns -1 if doesn't exist.
-     *
+     * 
      * @param e
-     *
      * @return
      */
     public int getEntryPosition(Entry e) {
 
         for (int i = 0; i < mYVals.size(); i++) {
-            if (e.equalTo(mYVals.get(i))) {
+            if (e.equalTo(mYVals.get(i)))
                 return i;
-            }
         }
 
         return -1;
@@ -674,12 +625,10 @@ public abstract class DataSet<T extends Entry> {
      */
     public void setValueFormatter(ValueFormatter f) {
 
-        if (f == null) {
+        if (f == null)
             return;
-        }
-        else {
+        else
             mValueFormatter = f;
-        }
     }
 
     /**
@@ -688,32 +637,29 @@ public abstract class DataSet<T extends Entry> {
      * @return
      */
     public ValueFormatter getValueFormatter() {
-        if (mValueFormatter == null) {
+        if (mValueFormatter == null)
             return new DefaultValueFormatter(1);
-        }
         return mValueFormatter;
     }
 
     /**
      * If this component has no ValueFormatter or is only equipped with the
      * default one (no custom set), return true.
-     *
+     * 
      * @return
      */
     public boolean needsDefaultFormatter() {
-        if (mValueFormatter == null) {
+        if (mValueFormatter == null)
             return true;
-        }
-        if (mValueFormatter instanceof DefaultValueFormatter) {
+        if (mValueFormatter instanceof DefaultValueFormatter)
             return true;
-        }
 
         return false;
     }
 
     /**
      * Sets the color the value-labels of this DataSet should have.
-     *
+     * 
      * @param color
      */
     public void setValueTextColor(int color) {
@@ -726,7 +672,7 @@ public abstract class DataSet<T extends Entry> {
 
     /**
      * Sets a Typeface for the value-labels of this DataSet.
-     *
+     * 
      * @param tf
      */
     public void setValueTypeface(Typeface tf) {
@@ -739,7 +685,7 @@ public abstract class DataSet<T extends Entry> {
 
     /**
      * Sets the text-size of the value-labels of this DataSet in dp.
-     *
+     * 
      * @param size
      */
     public void setValueTextSize(float size) {
@@ -748,7 +694,7 @@ public abstract class DataSet<T extends Entry> {
 
     /**
      * Returns the text-size of the labels that are displayed above the values.
-     *
+     * 
      * @return
      */
     public float getValueTextSize() {
@@ -759,17 +705,15 @@ public abstract class DataSet<T extends Entry> {
      * Checks if this DataSet contains the specified Entry. Returns true if so,
      * false if not. NOTE: Performance is pretty bad on this one, do not
      * over-use in performance critical situations.
-     *
+     * 
      * @param e
-     *
      * @return
      */
     public boolean contains(Entry e) {
 
         for (Entry entry : mYVals) {
-            if (entry.equals(e)) {
+            if (entry.equals(e))
                 return true;
-            }
         }
 
         return false;

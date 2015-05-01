@@ -70,11 +70,14 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
 
         // enable touch gestures
         mChart.setTouchEnabled(true);
+        
+        mChart.setDragDecelerationFrictionCoef(0.95f);
 
         // enable scaling and dragging
         mChart.setDragEnabled(true);
         mChart.setScaleEnabled(true);
         mChart.setDrawGridBackground(false);
+        mChart.setHighlightPerDragEnabled(true);
 
         // if disabled, scaling can be done on x- and y-axis separately
         mChart.setPinchZoom(true);
@@ -213,17 +216,6 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
             }
             case R.id.animateXY: {
                 mChart.animateXY(3000, 3000);
-                break;
-            }
-            case R.id.actionToggleAdjustXLegend: {
-                XAxis xLabels = mChart.getXAxis();
-
-                if (xLabels.isAdjustXLabelsEnabled())
-                    xLabels.setAdjustXLabels(false);
-                else
-                    xLabels.setAdjustXLabels(true);
-
-                mChart.invalidate();
                 break;
             }
             case R.id.actionToggleFilter: {

@@ -10,4 +10,7 @@ public interface BarLineScatterCandleDataProvider extends ChartInterface {
     public int getMaxVisibleCount();
 
     public boolean isInverted(AxisDependency axis);
+    
+    public int getLowestVisibleXIndex();
+    public int getHighestVisibleXIndex();
 }

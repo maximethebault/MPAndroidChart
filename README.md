@@ -5,9 +5,11 @@ Remember: *It's all about the looks.*
 
 ![alt tag](https://raw.github.com/PhilJay/MPChart/master/design/feature_graphic.png)
 
-**MPAndroidChart** is a powerful & easy to use chart library for Android, supporting line-, bar-, scatter-, candlestick-, pie- and radarcharts (spider web), as well as scaling, dragging (panning), selecting and animations. Works on **Android 2.2 (API level 8)** and upwards.
+**MPAndroidChart** is a powerful & easy to use chart library for Android, supporting line-, bar-, scatter-, candlestick-, bubble-, pie- and radarcharts (spider web), as well as scaling, dragging (panning), selecting and animations. Works on **Android 2.2 (API level 8)** and upwards.
 
 An **iOS** version of this library is now available, go check it out: [**ios-charts**](https://github.com/danielgindi/ios-charts)
+
+Are you using this library? Add your project to the [**references**](https://github.com/PhilJay/MPAndroidChart/edit/master/Projects_using_MPAndroidChart.txt).
 
 Donations
 -----
@@ -31,6 +33,11 @@ Donations
 <a href="https://plus.google.com/share?url=https://github.com/PhilJay/MPAndroidChart" target="_blank" title="share to twitter" style="width:100%"><img src="https://github.com/PhilJay/MPAndroidChart/blob/master/design/googleplus_icon.png" title="Share on Google+" width="35" height=35 />
 <a href="https://www.facebook.com/sharer/sharer.php?u=https://github.com/PhilJay/MPAndroidChart" target="_blank" title="share to twitter" style="width:100%"><img src="https://github.com/PhilJay/MPAndroidChart/blob/master/design/facebook_icon.png" title="Share on Facebook" width="35" height=35 />
 
+
+ Follow me on **Twitter**: [**PhilippJahoda**](https://twitter.com/PhilippJahoda)
+
+ Download my [**iOS apps**](https://itunes.apple.com/us/artist/philipp-jahoda/id951309215).
+
 Demo
 -----
 
@@ -53,6 +60,7 @@ Features
 =======
 
 **Core features:**
+ - 7 different chart types
  - Scaling on both axes (with touch-gesture, axes separately or pinch-zoom)
  - Dragging / Panning (with touch-gesture)
  - Combined-Charts (line-, bar-, scatter-, candle-data)
@@ -130,7 +138,7 @@ repositories {
 }
 
 dependencies {
-	    compile 'com.github.PhilJay:MPAndroidChart:v2.0.8'
+	    compile 'com.github.PhilJay:MPAndroidChart:v2.0.9'
 }
 ```
 
@@ -145,7 +153,7 @@ dependencies {
 <dependency>
 	    <groupId>com.github.PhilJay</groupId>
 	    <artifactId>MPAndroidChart</artifactId>
-	    <version>v2.0.8</version>
+	    <version>v2.0.9</version>
 </dependency>
 ```
 
@@ -159,6 +167,15 @@ dependencies {
  - Use the command `git clone https://github.com/PhilJay/MPAndroidChart.git` to download the full MPAndroidChart repository to your computer (this includes the folder of the library project as well as the example project)
  - Import the library folder (`MPChartLib`) into your Eclipse workspace
  - Add it as a reference to your project: [referencing library projects in Eclipse](http://developer.android.com/tools/projects/projects-eclipse.html#ReferencingLibraryProject)
+
+Proguard
+=======
+
+In case you are using Proguard, you will need to whitelist MPAndroidChart, which requires to add the following line to your Proguard configuration file.
+
+```
+-keep class com.github.mikephil.charting.** { *; }
+```
 
 Documentation
 =======

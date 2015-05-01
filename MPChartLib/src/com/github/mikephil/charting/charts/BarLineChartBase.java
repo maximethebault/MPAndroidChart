@@ -48,9 +48,21 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
     protected boolean mPinchZoomEnabled = false;
 
     /**
-     * flat that indicates if double tap zoom is enabled or not
+     * flag that indicates if double tap zoom is enabled or not
      */
     protected boolean mDoubleTapToZoomEnabled = true;
+
+    /**
+     * flag that indicates if highlighting per dragging over a fully zoomed out
+     * chart is enabled
+     */
+    protected boolean mHighlightPerDragEnabled = true;
+
+    /**
+     * if set to true, the highlight indicator (lines for linechart, dark bar
+     * for barchart) will be drawn upon selecting values.
+     */
+    protected boolean mHighLightIndicatorEnabled = true;
 
     /**
      * if true, dragging is enabled for the chart
@@ -71,12 +83,6 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
     protected Paint mGridBackgroundPaint;
 
     protected Paint mBorderPaint;
-
-    /**
-     * if set to true, the highlight indicator (lines for linechart, dark bar
-     * for barchart) will be drawn upon selecting values.
-     */
-    protected boolean mHighLightIndicatorEnabled = true;
 
     /**
      * flag indicating if the grid background should be drawn or not
@@ -173,22 +179,10 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
             long starttime = System.currentTimeMillis();
 
             mRenderer.initBuffers();
+            mXAxisRenderer.calcXBounds(this, mXAxis.mAxisLabelModulus);
+            mRenderer.calcXBounds(this, mXAxis.mAxisLabelModulus);
 
-            // // if data filtering is enabled
-            // if (mFilterData) {
-            // mData = getFilteredData();
-            //
-            // Log.i(LOG_TAG, "FilterTime: " + (System.currentTimeMillis() -
-            // starttime) + " ms");
-            // starttime = System.currentTimeMillis();
-            // } else {
-            // mData = getData();
-            // // Log.i(LOG_TAG, "Filtering disabled.");
-            // }
-
-            if (mXAxis.isAdjustXLabelsEnabled()) {
-                calcModulus();
-            }
+            calcModulus();
 
             // execute all drawing commands
             drawGridBackground(canvas);
@@ -256,13 +250,10 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
             mRenderer.drawValues(canvas);
 
             mLegendRenderer.renderLegend(canvas);
-            // drawLegend();
 
             drawMarkers(canvas);
 
             drawDescription(canvas);
-
-            // canvas.drawBitmap(mDrawBitmap, 0, 0, mDrawPaint);
 
             if (mLogEnabled) {
                 long drawtime = (System.currentTimeMillis() - starttime);
@@ -480,16 +471,20 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      */
     protected void calcModulus() {
 
-        if (mXAxis == null) {
+        if (mXAxis == null || !mXAxis.isEnabled()) {
             return;
         }
 
-        float[] values = new float[9];
-        mViewPortHandler.getMatrixTouch().getValues(values);
+        if (!mXAxis.isAxisModulusCustom()) {
 
-        mXAxis.mAxisLabelModulus = (int) Math
-                .ceil((mData.getXValCount() * mXAxis.mLabelWidth)
-                      / (mViewPortHandler.contentWidth() * values[Matrix.MSCALE_X]));
+            float[] values = new float[9];
+            mViewPortHandler.getMatrixTouch().getValues(values);
+
+            mXAxis.mAxisLabelModulus = (int) Math
+                    .ceil((mData.getXValCount() * mXAxis.mLabelWidth)
+                          / (mViewPortHandler.contentWidth() * values[Matrix.MSCALE_X]));
+
+        }
 
         if (mLogEnabled) {
             Log.i(LOG_TAG, "X-Axis modulus: " + mXAxis.mAxisLabelModulus + ", x-axis label width: "
@@ -581,6 +576,14 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         }
         else {
             return mListener.onTouch(this, event);
+        }
+    }
+
+    @Override
+    public void computeScroll() {
+
+        if (mListener instanceof BarLineChartTouchListener) {
+            ((BarLineChartTouchListener<?>) mListener).computeScroll();
         }
     }
 
@@ -893,15 +896,29 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
     }
 
     /**
-     * If set to true, the highlight indicators (cross of two lines for
-     * LineChart and ScatterChart, dark bar overlay for BarChart) that give
-     * visual indication that an Entry has been selected will be drawn upon
-     * selecting values. This does not depend on the MarkerView. Default: true
+     * If set to true, the highlight indicator (vertical line for LineChart and
+     * ScatterChart, dark bar overlay for BarChart) that gives visual indication
+     * that an Entry has been selected will be drawn upon selecting values. This
+     * does not depend on the MarkerView. Default: true
      *
      * @param enabled
      */
     public void setHighlightIndicatorEnabled(boolean enabled) {
         mHighLightIndicatorEnabled = enabled;
+    }
+
+    /**
+     * Set this to true to allow highlighting per dragging over the chart
+     * surface when it is fully zoomed out. Default: true
+     *
+     * @param enabled
+     */
+    public void setHighlightPerDragEnabled(boolean enabled) {
+        mHighlightPerDragEnabled = enabled;
+    }
+
+    public boolean isHighlightPerDragEnabled() {
+        return mHighlightPerDragEnabled;
     }
 
     /**
@@ -1216,6 +1233,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      *
      * @return
      */
+    @Override
     public int getLowestVisibleXIndex() {
         float[] pts = new float[] {
                 mViewPortHandler.contentLeft(), mViewPortHandler.contentBottom()
@@ -1230,6 +1248,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      *
      * @return
      */
+    @Override
     public int getHighestVisibleXIndex() {
         float[] pts = new float[] {
                 mViewPortHandler.contentRight(), mViewPortHandler.contentBottom()

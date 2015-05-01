@@ -14,6 +14,7 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
 
 public abstract class DataRenderer extends Renderer {
 
+    /** the animator object used to perform animations on the chart data */
     protected ChartAnimator mAnimator;
 
     /**
@@ -96,6 +97,11 @@ public abstract class DataRenderer extends Renderer {
         mValuePaint.setTextSize(set.getValueTextSize());
     }
 
+    /**
+     * Initializes the buffers used for rendering with a new size. Since this
+     * method performs memory allocations, it should only be called if
+     * necessary.
+     */
     public abstract void initBuffers();
 
     public abstract void drawData(Canvas c);

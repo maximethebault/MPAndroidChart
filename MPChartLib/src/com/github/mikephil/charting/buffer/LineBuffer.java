@@ -13,9 +13,8 @@ public class LineBuffer extends AbstractBuffer<Entry> {
 
     public void moveTo(float x, float y) {
 
-        if (index != 0) {
+        if (index != 0)
             return;
-        }
 
         buffer[index++] = x;
         buffer[index++] = y;
@@ -30,8 +29,7 @@ public class LineBuffer extends AbstractBuffer<Entry> {
         if (index == 2) {
             buffer[index++] = x;
             buffer[index++] = y;
-        }
-        else {
+        } else {
 
             float prevX = buffer[index - 2];
             float prevY = buffer[index - 1];
@@ -47,8 +45,9 @@ public class LineBuffer extends AbstractBuffer<Entry> {
         moveTo(entries.get(mFrom).getXIndex(), entries.get(mFrom).getVal() * phaseY);
 
         int size = (int) Math.ceil((mTo - mFrom) * phaseX + mFrom);
+        int from = mFrom + 1;
 
-        for (int i = mFrom + 1; i < size; i++) {
+        for (int i = from; i < size; i++) {
 
             Entry e = entries.get(i);
             lineTo(e.getXIndex(), e.getVal() * phaseY);

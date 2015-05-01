@@ -28,7 +28,7 @@ public class LineChartRenderer extends DataRenderer {
      * Bitmap object used for drawing the paths (otherwise they are too long if
      * rendered directly on the canvas)
      */
-    protected Bitmap mPathBitmap;
+    protected Bitmap mDrawBitmap;
 
     /**
      * on this canvas, the paths are rendered, it is initialized with the
@@ -70,13 +70,24 @@ public class LineChartRenderer extends DataRenderer {
     @Override
     public void drawData(Canvas c) {
 
-        if (mPathBitmap == null) {
-            mPathBitmap = Bitmap.createBitmap((int) mViewPortHandler.getChartWidth(),
-                                              (int) mViewPortHandler.getChartHeight(), Bitmap.Config.ARGB_4444);
-            mBitmapCanvas = new Canvas(mPathBitmap);
+        int width = (int) mViewPortHandler.getChartWidth();
+        int height = (int) mViewPortHandler.getChartHeight();
+
+        if (mDrawBitmap == null
+            || (mDrawBitmap.getWidth() != width)
+            || (mDrawBitmap.getHeight() != height)) {
+
+            if (width > 0 && height > 0) {
+
+                mDrawBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_4444);
+                mBitmapCanvas = new Canvas(mDrawBitmap);
+            }
+            else {
+                return;
+            }
         }
 
-        mPathBitmap.eraseColor(Color.TRANSPARENT);
+        mDrawBitmap.eraseColor(Color.TRANSPARENT);
 
         LineData<LineDataSet> lineData = mChart.getLineData();
 
@@ -87,7 +98,7 @@ public class LineChartRenderer extends DataRenderer {
             }
         }
 
-        c.drawBitmap(mPathBitmap, 0, 0, mRenderPaint);
+        c.drawBitmap(mDrawBitmap, 0, 0, mRenderPaint);
     }
 
     protected void drawDataSet(Canvas c, LineDataSet dataSet) {
@@ -97,8 +108,6 @@ public class LineChartRenderer extends DataRenderer {
         if (entries.size() < 1) {
             return;
         }
-
-        calcXBounds(mChart.getTransformer(dataSet.getAxisDependency()));
 
         mRenderPaint.setStrokeWidth(dataSet.getLineWidth());
         mRenderPaint.setPathEffect(dataSet.getDashPathEffect());
@@ -131,7 +140,7 @@ public class LineChartRenderer extends DataRenderer {
         Entry entryFrom = dataSet.getEntryForXIndex(mMinX);
         Entry entryTo = dataSet.getEntryForXIndex(mMaxX);
 
-        int minx = dataSet.getEntryPosition(entryFrom);
+        int minx = Math.max(dataSet.getEntryPosition(entryFrom), 0);
         int maxx = Math.min(dataSet.getEntryPosition(entryTo) + 1, entries.size());
 
         float phaseX = mAnimator.getPhaseX();
@@ -143,10 +152,7 @@ public class LineChartRenderer extends DataRenderer {
 
         int size = (int) Math.ceil((maxx - minx) * phaseX + minx);
 
-        minx = Math.max(minx - 2, 0); // Decrement by 2 as we always render two extra points to keep cubic flowing
-        size = Math.min(size + 2, entries.size()); // Increment by 2 as we always render two extra points to keep cubic flowing
-
-        if (size - minx >= 4) {
+        if (size - minx >= 2) {
 
             float prevDx = 0f;
             float prevDy = 0f;
@@ -164,8 +170,8 @@ public class LineChartRenderer extends DataRenderer {
             prevDx = (next.getXIndex() - cur.getXIndex()) * intensity;
             prevDy = (next.getVal() - cur.getVal()) * intensity;
 
-            cur = entries.get(1);
-            next = entries.get(2);
+            cur = entries.get(minx + 1);
+            next = entries.get(minx + (entries.size() - minx > 2 ? 2 : 1));
             curDx = (next.getXIndex() - prev.getXIndex()) * intensity;
             curDy = (next.getVal() - prev.getVal()) * intensity;
 
@@ -174,7 +180,7 @@ public class LineChartRenderer extends DataRenderer {
                               cur.getXIndex() - curDx,
                               (cur.getVal() - curDy) * phaseY, cur.getXIndex(), cur.getVal() * phaseY);
 
-            for (int j = minx + 2; j < size - 1; j++) {
+            for (int j = minx + 2, count = Math.min(size, entries.size() - 1); j < count; j++) {
 
                 prevPrev = entries.get(j - 2);
                 prev = entries.get(j - 1);
@@ -193,9 +199,10 @@ public class LineChartRenderer extends DataRenderer {
 
             if (size > entries.size() - 1) {
 
-                cur = entries.get(entries.size() - 1);
+                prevPrev = entries.get((entries.size() >= 3) ? entries.size() - 3
+                                                             : entries.size() - 2);
                 prev = entries.get(entries.size() - 2);
-                prevPrev = entries.get(entries.size() - 3);
+                cur = entries.get(entries.size() - 1);
                 next = cur;
 
                 prevDx = (cur.getXIndex() - prevPrev.getXIndex()) * intensity;
@@ -216,7 +223,8 @@ public class LineChartRenderer extends DataRenderer {
             cubicFillPath.reset();
             cubicFillPath.addPath(cubicPath);
             // create a new path, this is bad for performance
-            drawCubicFill(mBitmapCanvas, dataSet, cubicFillPath, trans, minx, maxx);
+            drawCubicFill(mBitmapCanvas, dataSet, cubicFillPath, trans,
+                          entryFrom.getXIndex(), entryFrom.getXIndex() + size);
         }
 
         mRenderPaint.setColor(dataSet.getColor());
@@ -284,7 +292,7 @@ public class LineChartRenderer extends DataRenderer {
         Entry entryFrom = dataSet.getEntryForXIndex(mMinX);
         Entry entryTo = dataSet.getEntryForXIndex(mMaxX);
 
-        int minx = dataSet.getEntryPosition(entryFrom);
+        int minx = Math.max(dataSet.getEntryPosition(entryFrom), 0);
         int maxx = Math.min(dataSet.getEntryPosition(entryTo) + 1, entries.size());
 
         int range = (maxx - minx) * 4 - 4;
@@ -337,18 +345,13 @@ public class LineChartRenderer extends DataRenderer {
 
         // if drawing filled is enabled
         if (dataSet.isDrawFilledEnabled() && entries.size() > 0) {
-            drawLinearFill(c, dataSet, entries, trans);
+            drawLinearFill(c, dataSet, entries, minx, maxx, trans);
         }
     }
 
-    protected void drawLinearFill(Canvas c, LineDataSet dataSet, List<Entry> entries,
+    protected void drawLinearFill(Canvas c, LineDataSet dataSet, List<Entry> entries, int minx,
+                                  int maxx,
                                   Transformer trans) {
-
-        Entry entryFrom = dataSet.getEntryForXIndex(mMinX);
-        Entry entryTo = dataSet.getEntryForXIndex(mMaxX);
-
-        int minx = dataSet.getEntryPosition(entryFrom);
-        int maxx = Math.min(dataSet.getEntryPosition(entryTo) + 1, entries.size());
 
         mRenderPaint.setStyle(Paint.Style.FILL);
 
@@ -363,7 +366,7 @@ public class LineChartRenderer extends DataRenderer {
 
         trans.pathValueToPixel(filled);
 
-        mBitmapCanvas.drawPath(filled, mRenderPaint);
+        c.drawPath(filled, mRenderPaint);
 
         // restore alpha
         mRenderPaint.setAlpha(255);
@@ -393,7 +396,11 @@ public class LineChartRenderer extends DataRenderer {
         }
 
         // close up
-        filled.lineTo(entries.get(Math.max(Math.min((int) Math.ceil((to - from) * phaseX + from) - 1, entries.size() - 1), 0)).getXIndex(), fillMin);
+        filled.lineTo(
+                entries.get(
+                        Math.max(
+                                Math.min((int) Math.ceil((to - from) * phaseX + from) - 1,
+                                         entries.size() - 1), 0)).getXIndex(), fillMin);
 
         filled.close();
 
@@ -416,12 +423,6 @@ public class LineChartRenderer extends DataRenderer {
                     continue;
                 }
 
-                List<Entry> entries = dataSet.getYVals();
-
-                if (entries.size() < 1) {
-                    return;
-                }
-
                 // apply the text-styling defined by the DataSet
                 applyValueTextStyle(dataSet);
 
@@ -434,10 +435,12 @@ public class LineChartRenderer extends DataRenderer {
                     valOffset = valOffset / 2;
                 }
 
+                List<Entry> entries = dataSet.getYVals();
+
                 Entry entryFrom = dataSet.getEntryForXIndex(mMinX);
                 Entry entryTo = dataSet.getEntryForXIndex(mMaxX);
 
-                int minx = dataSet.getEntryPosition(entryFrom);
+                int minx = Math.max(dataSet.getEntryPosition(entryFrom), 0);
                 int maxx = Math.min(dataSet.getEntryPosition(entryTo) + 1, entries.size());
 
                 float[] positions = trans.generateTransformedValuesLine(
@@ -488,20 +491,15 @@ public class LineChartRenderer extends DataRenderer {
                 continue;
             }
 
-            List<Entry> entries = dataSet.getYVals();
-
-            if (entries.size() < 1) {
-                return;
-            }
-
             mCirclePaintInner.setColor(dataSet.getCircleHoleColor());
 
             Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
+            List<Entry> entries = dataSet.getYVals();
 
-            Entry entryFrom = dataSet.getEntryForXIndex(mMinX);
+            Entry entryFrom = dataSet.getEntryForXIndex((mMinX < 0) ? 0 : mMinX);
             Entry entryTo = dataSet.getEntryForXIndex(mMaxX);
 
-            int minx = dataSet.getEntryPosition(entryFrom);
+            int minx = Math.max(dataSet.getEntryPosition(entryFrom), 0);
             int maxx = Math.min(dataSet.getEntryPosition(entryTo) + 1, entries.size());
 
             CircleBuffer buffer = mCircleBuffers[i];
@@ -572,7 +570,7 @@ public class LineChartRenderer extends DataRenderer {
             // y-position
 
             float[] pts = new float[] {
-                    xIndex, mChart.getYChartMax(), xIndex, mChart.getYChartMin(), 0, y,
+                    xIndex, mChart.getYChartMax(), xIndex, mChart.getYChartMin(), mChart.getXChartMin(), y,
                     mChart.getXChartMax(), y
             };
 
